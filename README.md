@@ -13,3 +13,10 @@ This app will:
   * A plot synopsis (called overview in the api)
   * user rating (called vote_average in the api)
   * release date
+
+## API KEYS
+
+This project uses responses from https://www.themoviedb.org/. In order to use their API, you must provide an API key.
+This application will read the API key from movie_db_apikey.txt. This file is not included in this repo.
+You must create the movie_db_apikey.txt and paste your API key in there, in order to be able to successfully run this repo.
+If you do not have the API key, you must create an account with themoviedb.org and request API keys from the account settings.
