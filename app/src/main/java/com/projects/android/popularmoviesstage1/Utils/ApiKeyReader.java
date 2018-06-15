@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 
 /**
  * Created by alshtray on 6/14/18.
@@ -15,22 +16,30 @@ import java.io.InputStreamReader;
 public class ApiKeyReader {
     private final static String TAG = ApiKeyReader.class.getCanonicalName();
 
-    public static String readApiKey(String apiKeyFilePath) throws IOException {
-        String apiKey ="";
-        FileInputStream is;
+    public static String readApiKey(Object obj, String apiKeyFilePath) throws IOException {
+        String apiKey = "";
+        FileInputStream stream;
         BufferedReader reader;
-        final File file = new File(apiKeyFilePath);
+        final File file = getFileFromPath(obj, apiKeyFilePath);
 
         if (file.exists()) {
-            is = new FileInputStream(file);
-            reader = new BufferedReader(new InputStreamReader(is));
+            stream = new FileInputStream(file);
+            reader = new BufferedReader(new InputStreamReader(stream));
             apiKey = reader.readLine();
         }
         else{
-            //Log.e(TAG, "Could not read api key file. Either file doesn't exist or it is not in the correct place.");
-            //Log.e(TAG, "read the README for instructions on generating required api keys");
+            Log.e(TAG, "Could not read api key file. Either file doesn't exist or it is not in the correct place.");
+            Log.e(TAG, "read the README for instructions on generating required api keys");
         }
 
         return apiKey;
+    }
+
+    private static File getFileFromPath(Object obj, String fileName) {
+        // method taken from stackoverflow:
+        // https://stackoverflow.com/questions/29341744/android-studio-unit-testing-read-data-input-file
+        ClassLoader classLoader = obj.getClass().getClassLoader();
+        URL resource = classLoader.getResource(fileName);
+        return new File(resource.getPath());
     }
 }
