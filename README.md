@@ -18,5 +18,5 @@ This app will:
 
 This project uses responses from https://www.themoviedb.org/. In order to use their API, you must provide an API key.
 This application will read the API key from movie_db_apikey.txt. This file is not included in this repo.
-You must create the movie_db_apikey.txt under the res directory and paste your API key in there, in order to be able to successfully run this repo.
+You must create the movie_db_apikey.txt under the app/src/main/resources directory and paste your API key in there, in order to be able to successfully run this repo.
 If you do not have the API key, you must create an account with themoviedb.org and request API keys from the account settings.
