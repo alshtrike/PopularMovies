@@ -35,7 +35,7 @@ public class MovieRequestBuilder {
 
     private String buildMovieRequest(String requestParam) {
         String movieRequest = mContext.getString(R.string.movie_db_base_url);
-        movieRequest = movieRequest + requestParam + "?" + mMovieDbApiKey;
+        movieRequest = movieRequest + requestParam + "?" + mContext.getString(R.string.api_key_field) + mMovieDbApiKey;
         return movieRequest;
     }
 }

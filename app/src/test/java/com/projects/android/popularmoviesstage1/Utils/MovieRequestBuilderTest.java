@@ -25,20 +25,18 @@ public class MovieRequestBuilderTest {
 
     private String mValidApiKey = "somes3cr3tzsh0ldb3secr3t";
     private int mTestMovieId = 420;
-    private String mMovieDbUrl = "https://api.themoviedb.org/3/movie/";
-    private String mPopular = "popular";
-    private String mTopRated = "top_rated";
-    private String mExpectedPopularMovieRequest = mMovieDbUrl+mPopular+"?"+mValidApiKey;
-    private String mExpectedTopRatedMovieRequest = mMovieDbUrl+mTopRated+"?"+mValidApiKey;
-    private String mExpectedMovieDetailRequest = mMovieDbUrl+mTestMovieId+"?"+mValidApiKey;
+    private String mExpectedPopularMovieRequest = "https://api.themoviedb.org/3/movie/popular?api_key="+mValidApiKey;
+    private String mExpectedTopRatedMovieRequest = "https://api.themoviedb.org/3/movie/top_rated?api_key="+mValidApiKey;
+    private String mExpectedMovieDetailRequest = "https://api.themoviedb.org/3/movie/"+mTestMovieId+"?api_key="+mValidApiKey;
     private MovieRequestBuilder mRequestBuilder;
     private String mBuiltRequest;
 
     @Before
     public void setUp(){
-        when(mMockContext.getString(R.string.movie_db_popular_request)).thenReturn(mPopular);
-        when(mMockContext.getString(R.string.movie_db_top_rated_request)).thenReturn(mTopRated);
-        when(mMockContext.getString(R.string.movie_db_base_url)).thenReturn(mMovieDbUrl);
+        when(mMockContext.getString(R.string.movie_db_popular_request)).thenReturn("popular");
+        when(mMockContext.getString(R.string.movie_db_top_rated_request)).thenReturn("top_rated");
+        when(mMockContext.getString(R.string.api_key_field)).thenReturn("api_key=");
+        when(mMockContext.getString(R.string.movie_db_base_url)).thenReturn("https://api.themoviedb.org/3/movie/");
     }
 
     @Test

@@ -57,12 +57,14 @@ public class MainActivity extends AppCompatActivity {
     private void sortMoviesByTopRated() {
         //TODO make this do real stuff, showing toast for now
         mMovieRequest = mRequestBuilder.buildTopRatedMoviesRequest();
+        new FetchMoviesTask().execute(mMovieRequest);
         showToast("Top Rated Movies");
     }
 
     private void sortMoviesByPopular() {
         //TODO make this do real stuff, showing toast for now
         mMovieRequest = mRequestBuilder.buildPopularMoviesRequest();
+        new FetchMoviesTask().execute(mMovieRequest);
         showToast("Popular Movies");
     }
 
