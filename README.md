@@ -8,14 +8,14 @@ This app will:
 * Allow your user to change sort order via a setting
 * The sort order can be by most popular or by highest-rated
 * Allow the user to tap on a movie poster and transition to a details screen with additional information such as:
-  * original title
+  * original mTitle
   * movie poster image thumbnail
   * A plot synopsis (called overview in the api)
   * user rating (called vote_average in the api)
-  * release date
+  * release mDate
 
 ## API KEYS
 This project uses responses from https://www.themoviedb.org/. In order to use their API, you must provide an API key.
-This application will read the API key from movie_db_apikey.txt. This file is not included in this repo.
-You must create a resources folder under app/src/main/. In that folder put the movie_db_apikey.txt and paste your API key in there. This is needed in order to be able to successfully run this repo.
-If you do not have the API key, you must create an account with themoviedb.org and request API keys from the account settings.
+This application will read the API key from your global gradle.properties. This should be located under
+Users/YourUsername/.gradle/gradle.properties. If your .gradle folder does not have this file, please make one.
+Once you've found your global gradle.properies please put your api key there like so: **movie_db_api_key**="_your_api_key_goes_here_"

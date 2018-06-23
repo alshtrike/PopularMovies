@@ -19,17 +19,21 @@ public class MovieRequestBuilder {
     }
 
     public String buildPopularMoviesRequest(){
-        String popularMovieRequest = buildMovieRequest(mContext.getString(R.string.movie_db_popular_request));
-        return popularMovieRequest;
+        String movieRequest = buildMovieRequest(mContext.getString(R.string.movie_db_popular_request));
+        return movieRequest;
+    }
+
+    public String buildTopRatedMoviesRequest(){
+        String movieRequest = buildMovieRequest(mContext.getString(R.string.movie_db_top_rated_request));
+        return movieRequest;
     }
 
     public String buildMovieDetailRequest(int id){
-        String popularMovieRequest = buildMovieRequest(String.valueOf(id));
-        return popularMovieRequest;
+        String movieRequest = buildMovieRequest(String.valueOf(id));
+        return movieRequest;
     }
 
     private String buildMovieRequest(String requestParam) {
-
         String movieRequest = mContext.getString(R.string.movie_db_base_url);
         movieRequest = movieRequest + requestParam + "?" + mMovieDbApiKey;
         return movieRequest;
