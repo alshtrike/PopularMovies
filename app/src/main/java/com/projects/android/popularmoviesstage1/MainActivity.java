@@ -3,6 +3,9 @@ package com.projects.android.popularmoviesstage1;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,8 +17,11 @@ import com.projects.android.popularmoviesstage1.Utils.MovieResponseBuilder;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String mMovieRequest = "";
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private MovieRequestBuilder mRequestBuilder;
+    private MovieAdapter mMovieAdapter;
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +34,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(mRequestBuilder!=null){
-            mMovieRequest = mRequestBuilder.buildPopularMoviesRequest();
+            mMovieAdapter = new MovieAdapter();
+            int numOfColumns = 2;
+            GridLayoutManager layoutManager = new GridLayoutManager(this, numOfColumns);
+            mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
+            mRecyclerView.setLayoutManager(layoutManager);
+            mRecyclerView.setHasFixedSize(true);
+            mRecyclerView.setAdapter(mMovieAdapter);
+            sortMoviesByTopRated();
         }
 
     }
@@ -55,16 +68,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sortMoviesByTopRated() {
-        //TODO make this do real stuff, showing toast for now
-        mMovieRequest = mRequestBuilder.buildTopRatedMoviesRequest();
-        new FetchMoviesTask().execute(mMovieRequest);
+        String request = mRequestBuilder.buildTopRatedMoviesRequest();
+        new FetchMoviesTask().execute(request);
         showToast("Top Rated Movies");
     }
 
     private void sortMoviesByPopular() {
-        //TODO make this do real stuff, showing toast for now
-        mMovieRequest = mRequestBuilder.buildPopularMoviesRequest();
-        new FetchMoviesTask().execute(mMovieRequest);
+        String request = mRequestBuilder.buildPopularMoviesRequest();
+        new FetchMoviesTask().execute(request);
         showToast("Popular Movies");
     }
 
@@ -76,8 +87,13 @@ public class MainActivity extends AppCompatActivity {
     private class FetchMoviesTask extends AsyncTask<String, Void, Movie[]> {
 
         @Override
-        protected void onPostExecute(Movie[] strings) {
-            super.onPostExecute(strings);
+        protected void onPostExecute(Movie[] movies) {
+            if(movies!=null){
+                mMovieAdapter.setMovieData(movies);
+            }
+            else{
+                Log.e(TAG,"Unable to load movies successfully");
+            }
         }
 
         @Override
