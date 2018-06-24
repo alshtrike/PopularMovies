@@ -46,6 +46,7 @@ public class MovieResponseSerializer {
 
         Movie movie = new Movie();
         movie.setTitle(title);
+        //TODO move this logic since we need different size images in different activities
         movie.setImage(BASE_IMAGE_URL+image);
         movie.setOverview(overview);
         movie.setRating(rating);

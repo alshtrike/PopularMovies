@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PopularMoviesStage1</string>
+    <string name="app_name">Popular Movies</string>
     <string name="movie_db_base_url">https://api.themoviedb.org/3/movie/</string>
     <string name="movie_db_popular_request">popular</string>
     <string name="movie_db_top_rated_request">top_rated</string>
@@ -7,5 +7,6 @@
     <string name="sort_by_popular">Sort by: Popular</string>
     <string name="sort_by_top_rated">Sort by: Top Rated</string>
     <string name="api_key_field">api_key=</string>
-    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_detail">Movie Detail</string>
+    <string name="movie_extra">movie</string>
 </resources>

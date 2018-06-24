@@ -1,5 +1,6 @@
 package com.projects.android.popularmoviesstage1;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,13 +12,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.projects.android.popularmoviesstage1.Data.Movie;
 import com.projects.android.popularmoviesstage1.Utils.MovieRequestBuilder;
 import com.projects.android.popularmoviesstage1.Utils.MovieResponseBuilder;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -38,14 +38,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(mRequestBuilder!=null){
-            mMovieAdapter = new MovieAdapter();
+            mMovieAdapter = new MovieAdapter(this);
             int numOfColumns = 2;
             GridLayoutManager layoutManager = new GridLayoutManager(this, numOfColumns);
             mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
             mRecyclerView.setLayoutManager(layoutManager);
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setAdapter(mMovieAdapter);
-            sortMoviesByTopRated();
+            sortMoviesByPopular();
         }
 
     }
@@ -76,18 +76,18 @@ public class MainActivity extends AppCompatActivity {
     private void sortMoviesByTopRated() {
         String request = mRequestBuilder.buildTopRatedMoviesRequest();
         new FetchMoviesTask().execute(request);
-        showToast("Top Rated Movies");
     }
 
     private void sortMoviesByPopular() {
         String request = mRequestBuilder.buildPopularMoviesRequest();
         new FetchMoviesTask().execute(request);
-        showToast("Popular Movies");
     }
 
-    private void showToast(String toastText){
-        Toast toast = Toast.makeText(this, toastText, Toast.LENGTH_LONG);
-        toast.show();
+    @Override
+    public void onClick(Movie movie) {
+        Intent startMovieDetail = new Intent(this, DetailActivity.class);
+        startMovieDetail.putExtra(getString(R.string.movie_extra), movie);
+        startActivity(startMovieDetail);
     }
 
     private class FetchMoviesTask extends AsyncTask<String, Void, Movie[]> {

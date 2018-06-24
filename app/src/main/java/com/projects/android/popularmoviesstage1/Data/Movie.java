@@ -1,10 +1,12 @@
 package com.projects.android.popularmoviesstage1.Data;
 
+import java.io.Serializable;
+
 /**
  * Created by alshtray on 6/16/18.
  */
 
-public class Movie {
+public class Movie implements Serializable {
 
 
     private String mTitle;
