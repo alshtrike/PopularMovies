@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.projects.android.popularmoviesstage1.Data.Movie;
@@ -22,12 +24,14 @@ public class MainActivity extends AppCompatActivity {
     private MovieRequestBuilder mRequestBuilder;
     private MovieAdapter mMovieAdapter;
     private RecyclerView mRecyclerView;
+    private ProgressBar mLoadingIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String apiKey = BuildConfig.MovieDbApiKey;
+        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
         if(!apiKey.isEmpty()){
             mRequestBuilder = new MovieRequestBuilder(apiKey, this);
@@ -90,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Movie[] movies) {
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
             if(movies!=null){
                 mMovieAdapter.setMovieData(movies);
             }
@@ -101,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            mLoadingIndicator.setVisibility(View.VISIBLE);
         }
 
         @Override
