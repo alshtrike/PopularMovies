@@ -58,9 +58,11 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id){
             case R.id.sort_by_popular:
+                mMovieAdapter.setMovieData(null);
                 sortMoviesByPopular();
                 return true;
             case R.id.sort_by_top_rated:
+                mMovieAdapter.setMovieData(null);
                 sortMoviesByTopRated();
                 return true;
             default: return super.onOptionsItemSelected(item);
