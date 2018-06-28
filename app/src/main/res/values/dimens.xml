@@ -3,8 +3,13 @@
     <dimen name="home_movie_poster_width">210dp</dimen>
     <dimen name="home_movie_poster_height">320dp</dimen>
     <dimen name="movie_detail_padding">20dp</dimen>
+    <dimen name="movie_detail_poster_padding">30dp</dimen>
+    <dimen name="movie_detail_title_padding_bottom">10dp</dimen>
     <dimen name="movie_detail_title_height">150dp</dimen>
-    <dimen name="movie_detail_title_size">35dp</dimen>
+    <dimen name="movie_detail_title_size">40dp</dimen>
+    <dimen name="movie_detail_poster_width">130dp</dimen>
+    <dimen name="movie_detail_poster_height">190dp</dimen>
+    <dimen name="movie_detail_date_size">30dp</dimen>
     <dimen name="movie_summary_size">16dp</dimen>
     <dimen name="movie_summary_horiz_padding">10dp</dimen>
 </resources>

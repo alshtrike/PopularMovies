@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.projects.android.popularmoviesstage1.Data.Movie;
+import com.projects.android.popularmoviesstage1.Utils.MoviePosterPathBuilder;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -38,8 +39,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
         Movie movieAtGivenPosition = mMovieData[position];
         ImageView moviePoster = holder.mMoviePoster;
+        String movieUrl = MoviePosterPathBuilder.buildMovieGridPosterPath(mContext, movieAtGivenPosition.getImage());
+
         Picasso.with(mContext)
-                .load(movieAtGivenPosition.getImage())
+                .load(movieUrl)
                 .placeholder(R.drawable.image_placeholder_185)
                 .into(moviePoster);
     }
@@ -60,7 +63,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
         public MovieAdapterViewHolder(View view) {
             super(view);
-            mMoviePoster = (ImageView) view.findViewById(R.id.movie_poster_iv);
+            mMoviePoster = (ImageView) view.findViewById(R.id.iv_movie_poster);
             view.setOnClickListener(this);
 
         }

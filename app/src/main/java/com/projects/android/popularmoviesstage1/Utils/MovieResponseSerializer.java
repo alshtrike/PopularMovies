@@ -19,7 +19,6 @@ public class MovieResponseSerializer {
     private final static String OVERVIEW = "overview";
     private final static String RATING = "vote_average";
     private final static String DATE = "release_date";
-    private final static String BASE_IMAGE_URL ="https://image.tmdb.org/t/p/w185";
 
     public static Movie[] serializeJSON(String json) throws JSONException{
         Movie[] movieArray = null;
@@ -46,8 +45,7 @@ public class MovieResponseSerializer {
 
         Movie movie = new Movie();
         movie.setTitle(title);
-        //TODO move this logic since we need different size images in different activities
-        movie.setImage(BASE_IMAGE_URL+image);
+        movie.setImage(image);
         movie.setOverview(overview);
         movie.setRating(rating);
         movie.setDate(date);
