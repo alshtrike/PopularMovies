@@ -5,6 +5,5 @@
     <color name="colorPrimaryWhite">#FFFFFF</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorMovieTitle">#159588</color>
-    <color name="colorLightText">#9e9e9e</color>
     <color name="colorDarkText">#818181</color>
 </resources>

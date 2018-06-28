@@ -11,8 +11,9 @@
         android:textSize="@dimen/movie_detail_title_size"
         android:textColor="@color/colorPrimaryWhite"
         android:background="@color/colorMovieTitle"
-        android:gravity="center_vertical|left"
-        android:paddingLeft="@dimen/movie_detail_padding"
+        android:gravity="center_vertical|start"
+        android:paddingStart="@dimen/movie_detail_padding"
+        android:paddingEnd="@dimen/movie_detail_padding"
         android:layout_marginBottom="@dimen/movie_detail_title_padding_bottom"/>
 
     <ScrollView
@@ -34,10 +35,10 @@
                     android:id="@+id/iv_detail_movie_poster"
                     android:layout_width="@dimen/movie_detail_poster_width"
                     android:layout_height="@dimen/movie_detail_poster_height"
-                    android:layout_centerInParent="true"
                     android:scaleType="centerCrop"
                     android:layout_marginLeft="@dimen/movie_detail_poster_padding"
-                    android:layout_marginRight="@dimen/movie_detail_poster_padding" />
+                    android:layout_marginRight="@dimen/movie_detail_poster_padding"
+                    android:contentDescription="@string/poster_description" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -48,15 +49,14 @@
                         android:id="@+id/tv_movie_release_year"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/movie_detail_date_size"
-                        android:layout_centerInParent="true"/>
+                        android:textSize="@dimen/movie_detail_date_size"/>
 
                     <TextView
                         android:id="@+id/tv_movie_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:layout_centerInParent="true"/>
+                        android:textColor="@color/colorPrimaryDark"/>
+
                 </LinearLayout>
             </LinearLayout>
 

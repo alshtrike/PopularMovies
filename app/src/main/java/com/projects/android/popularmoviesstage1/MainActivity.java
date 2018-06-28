@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private MovieRequestBuilder mRequestBuilder;
     private MovieAdapter mMovieAdapter;
-    private RecyclerView mRecyclerView;
     private ProgressBar mLoadingIndicator;
 
     @Override
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String apiKey = BuildConfig.MovieDbApiKey;
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+        mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
 
         if(!apiKey.isEmpty()){
             mRequestBuilder = new MovieRequestBuilder(apiKey, this);
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             mMovieAdapter = new MovieAdapter(this);
             int numOfColumns = 2;
             GridLayoutManager layoutManager = new GridLayoutManager(this, numOfColumns);
-            mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
+            RecyclerView mRecyclerView = findViewById(R.id.rv_movies);
             mRecyclerView.setLayoutManager(layoutManager);
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setAdapter(mMovieAdapter);
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         startActivity(startMovieDetail);
     }
 
-    private class FetchMoviesTask extends AsyncTask<String, Void, Movie[]> {
+    public class FetchMoviesTask extends AsyncTask<String, Void, Movie[]> {
 
         @Override
         protected void onPostExecute(Movie[] movies) {

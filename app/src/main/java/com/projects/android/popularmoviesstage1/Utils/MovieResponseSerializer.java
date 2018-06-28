@@ -6,11 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by alshtray on 6/19/18.
- */
-
-public class MovieResponseSerializer {
+class MovieResponseSerializer {
 
     /*the response we're looking for is inside the results array*/
     private final static String RESULTS = "results";
@@ -21,7 +17,7 @@ public class MovieResponseSerializer {
     private final static String DATE = "release_date";
 
     public static Movie[] serializeJSON(String json) throws JSONException{
-        Movie[] movieArray = null;
+        Movie[] movieArray;
 
         JSONObject movieJson = new JSONObject(json);
         JSONArray movieJsonArray = movieJson.optJSONArray(RESULTS);

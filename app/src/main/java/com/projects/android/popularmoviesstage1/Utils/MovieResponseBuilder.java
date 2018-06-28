@@ -14,10 +14,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-/**
- * Created by alshtray on 6/16/18.
- */
-
 public class MovieResponseBuilder {
 
     private static final String TAG = MovieResponseBuilder.class.getSimpleName();

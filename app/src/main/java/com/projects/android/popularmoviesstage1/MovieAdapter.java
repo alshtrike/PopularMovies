@@ -11,10 +11,6 @@ import com.projects.android.popularmoviesstage1.Data.Movie;
 import com.projects.android.popularmoviesstage1.Utils.MoviePosterPathBuilder;
 import com.squareup.picasso.Picasso;
 
-/**
- * Created by alshtray on 6/23/18.
- */
-
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder>{
 
     private Movie[] mMovieData;
@@ -59,11 +55,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     protected class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        ImageView mMoviePoster;
+        final ImageView mMoviePoster;
 
         public MovieAdapterViewHolder(View view) {
             super(view);
-            mMoviePoster = (ImageView) view.findViewById(R.id.iv_movie_poster);
+            mMoviePoster = view.findViewById(R.id.iv_movie_poster);
             view.setOnClickListener(this);
 
         }

@@ -17,11 +17,11 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        TextView title = (TextView) findViewById(R.id.tv_movie_detail_title);
-        TextView summary = (TextView) findViewById(R.id.tv_movie_detail_summary);
-        TextView year = (TextView) findViewById(R.id.tv_movie_release_year);
-        TextView rating = (TextView) findViewById(R.id.tv_movie_rating);
-        ImageView detailMoviePoster = (ImageView) findViewById(R.id.iv_detail_movie_poster);
+        TextView title = findViewById(R.id.tv_movie_detail_title);
+        TextView summary = findViewById(R.id.tv_movie_detail_summary);
+        TextView year = findViewById(R.id.tv_movie_release_year);
+        TextView rating = findViewById(R.id.tv_movie_rating);
+        ImageView detailMoviePoster = findViewById(R.id.iv_detail_movie_poster);
 
         Intent parentIntent = getIntent();
 
@@ -31,7 +31,9 @@ public class DetailActivity extends AppCompatActivity {
 
                 title.setText(movie.getTitle());
                 summary.setText(movie.getOverview());
-                rating.setText(movie.getRating()+"/10");
+
+                String ratingScore = movie.getRating()+getString(R.string.max_review_score);
+                rating.setText(ratingScore);
 
                 String yearString = getMovieReleaseYear(movie.getDate());
                 year.setText(yearString);

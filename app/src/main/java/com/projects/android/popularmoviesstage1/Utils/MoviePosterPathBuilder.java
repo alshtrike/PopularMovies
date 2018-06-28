@@ -4,10 +4,6 @@ import android.content.Context;
 
 import com.projects.android.popularmoviesstage1.R;
 
-/**
- * Created by alshtray on 6/27/18.
- */
-
 public class MoviePosterPathBuilder {
 
     public static String buildMovieGridPosterPath(Context context, String imageUrl){
