@@ -18,7 +18,7 @@ This app will:
 This project uses responses from https://www.themoviedb.org/. In order to use their API, you must provide an API key.
 This application will read the API key from your global gradle.properties. This should be located under
 Users/YourUsername/.gradle/gradle.properties. If your .gradle folder does not have this file, please make one.
-Once you've found your global gradle.properies please put your api key there like so:
+Once you've found your global gradle.properties please put your api key there like so:
  ```
 movie_db_api_key="your_api_key_goes_here"
  ```
