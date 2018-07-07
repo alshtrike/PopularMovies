@@ -1,8 +1,8 @@
-package com.projects.android.popularmoviesstage1.Utils;
+package com.projects.android.popularmovies.Utils;
 
 import android.content.Context;
 
-import com.projects.android.popularmoviesstage1.R;
+import com.projects.android.popularmovies.R;
 
 public class MoviePosterPathBuilder {
 

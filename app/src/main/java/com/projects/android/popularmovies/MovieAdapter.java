@@ -1,4 +1,4 @@
-package com.projects.android.popularmoviesstage1;
+package com.projects.android.popularmovies;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.projects.android.popularmoviesstage1.Data.Movie;
-import com.projects.android.popularmoviesstage1.Utils.MoviePosterPathBuilder;
+import com.projects.android.popularmovies.Data.Movie;
+import com.projects.android.popularmovies.Utils.MoviePosterPathBuilder;
 import com.squareup.picasso.Picasso;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder>{

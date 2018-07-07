@@ -1,4 +1,4 @@
-package com.projects.android.popularmoviesstage1;
+package com.projects.android.popularmovies;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,9 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.projects.android.popularmoviesstage1.Data.Movie;
-import com.projects.android.popularmoviesstage1.Utils.MovieRequestBuilder;
-import com.projects.android.popularmoviesstage1.Utils.MovieResponseBuilder;
+import com.projects.android.popularmovies.Data.Movie;
+import com.projects.android.popularmovies.Utils.MovieRequestBuilder;
+import com.projects.android.popularmovies.Utils.MovieResponseBuilder;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 

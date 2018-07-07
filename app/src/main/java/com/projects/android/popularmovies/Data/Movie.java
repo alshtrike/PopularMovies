@@ -1,4 +1,4 @@
-package com.projects.android.popularmoviesstage1.Data;
+package com.projects.android.popularmovies.Data;
 
 import java.io.Serializable;
 

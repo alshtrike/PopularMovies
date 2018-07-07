@@ -1,9 +1,9 @@
-package com.projects.android.popularmoviesstage1.Utils;
+package com.projects.android.popularmovies.Utils;
 
 import android.net.Uri;
 import android.util.Log;
 
-import com.projects.android.popularmoviesstage1.Data.Movie;
+import com.projects.android.popularmovies.Data.Movie;
 
 import org.json.JSONException;
 

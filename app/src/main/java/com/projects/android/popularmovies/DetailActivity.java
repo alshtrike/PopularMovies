@@ -1,4 +1,4 @@
-package com.projects.android.popularmoviesstage1;
+package com.projects.android.popularmovies;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.projects.android.popularmoviesstage1.Data.Movie;
-import com.projects.android.popularmoviesstage1.Utils.MoviePosterPathBuilder;
+import com.projects.android.popularmovies.Data.Movie;
+import com.projects.android.popularmovies.Utils.MoviePosterPathBuilder;
 import com.squareup.picasso.Picasso;
 
 public class DetailActivity extends AppCompatActivity {
