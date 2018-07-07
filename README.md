@@ -1,5 +1,5 @@
-# PopularMoviesStage1
-Stage 1 of the Udacity Popular Movies project
+# PopularMovies
+Udacity Popular Movies project
 
 ## Project Description
 This app will:
