@@ -1,6 +1,8 @@
 package com.projects.android.popularmovies;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.projects.android.popularmovies.Data.Movie;
 import com.projects.android.popularmovies.Utils.MovieRequestBuilder;
@@ -72,21 +75,41 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
     }
 
-    private void sortMoviesByTopRated() {
-        String request = mRequestBuilder.buildTopRatedMoviesRequest();
-        new FetchMoviesTask().execute(request);
-    }
-
-    private void sortMoviesByPopular() {
-        String request = mRequestBuilder.buildPopularMoviesRequest();
-        new FetchMoviesTask().execute(request);
-    }
-
     @Override
     public void onClick(Movie movie) {
         Intent startMovieDetail = new Intent(this, DetailActivity.class);
         startMovieDetail.putExtra(getString(R.string.movie_extra), movie);
         startActivity(startMovieDetail);
+    }
+
+    private void sortMoviesByTopRated() {
+        String request = mRequestBuilder.buildTopRatedMoviesRequest();
+        sendMoviesRequest(request);
+
+    }
+
+    private void sortMoviesByPopular() {
+        String request = mRequestBuilder.buildPopularMoviesRequest();
+        sendMoviesRequest(request);
+    }
+
+    private void sendMoviesRequest(String request) {
+
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if(isConnected){
+            new FetchMoviesTask().execute(request);
+        }
+        else{
+            showToast(getString(R.string.no_internet_error));
+        }
+    }
+
+    private void showToast(String toastText){
+        Toast toast = Toast.makeText(this, toastText, Toast.LENGTH_LONG);
+        toast.show();
     }
 
     public class FetchMoviesTask extends AsyncTask<String, Void, Movie[]> {
