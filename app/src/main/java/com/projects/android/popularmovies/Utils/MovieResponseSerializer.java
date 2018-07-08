@@ -15,6 +15,7 @@ class MovieResponseSerializer {
     private final static String OVERVIEW = "overview";
     private final static String RATING = "vote_average";
     private final static String DATE = "release_date";
+    private final static String MOVIE_ID = "id";
 
     public static Movie[] serializeJSON(String json) throws JSONException{
         Movie[] movieArray;
@@ -33,13 +34,15 @@ class MovieResponseSerializer {
 
     private static Movie parseMovie(JSONObject movieObj) {
 
+        int id = movieObj.optInt(MOVIE_ID);
         String title = movieObj.optString(TITLE);
         String image = movieObj.optString(IMAGE);
         String overview = movieObj.optString(OVERVIEW);
-        String rating = String.valueOf(movieObj.optLong(RATING));
+        String rating = String.valueOf(movieObj.optDouble(RATING));
         String date = movieObj.optString(DATE);
 
         Movie movie = new Movie();
+        movie.setId(id);
         movie.setTitle(title);
         movie.setImage(image);
         movie.setOverview(overview);

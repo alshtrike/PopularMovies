@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Movie implements Serializable {
 
+    private int mId;
     private String mTitle;
     private String mImage;
     private String mOverview;
@@ -48,5 +49,13 @@ public class Movie implements Serializable {
 
     public void setDate(String mDate) {
         this.mDate = mDate;
+    }
+
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int mId) {
+        this.mId = mId;
     }
 }
