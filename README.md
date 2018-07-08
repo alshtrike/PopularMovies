@@ -8,11 +8,11 @@ This app will:
 * Allow your user to change sort order via a setting
 * The sort order can be by most popular or by highest-rated
 * Allow the user to tap on a movie poster and transition to a details screen with additional information such as:
-  * original mTitle
+  * movie title
   * movie poster image thumbnail
   * A plot synopsis (called overview in the api)
   * user rating (called vote_average in the api)
-  * release mDate
+  * release date
 
 ## API KEYS
 This project uses responses from https://www.themoviedb.org/. In order to use their API, you must provide an API key.

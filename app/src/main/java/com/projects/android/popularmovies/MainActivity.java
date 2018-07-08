@@ -3,12 +3,13 @@ package com.projects.android.popularmovies;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,13 +21,14 @@ import com.projects.android.popularmovies.Data.Movie;
 import com.projects.android.popularmovies.Utils.MovieRequestBuilder;
 import com.projects.android.popularmovies.Utils.MovieResponseBuilder;
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Movie[]> {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final int MOVIES_LOADER_ID = 0;
 
     private MovieRequestBuilder mRequestBuilder;
     private MovieAdapter mMovieAdapter;
     private ProgressBar mLoadingIndicator;
+    private String mRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +49,18 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             mRecyclerView.setLayoutManager(layoutManager);
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setAdapter(mMovieAdapter);
-            sortMoviesByPopular();
-        }
 
+            String requestExtra = getString(R.string.request_extra);
+            if(savedInstanceState!=null){
+                if(savedInstanceState.containsKey(requestExtra)){
+                    mRequest = savedInstanceState.getString(requestExtra);
+                    sendMoviesRequest();
+                }
+            }
+            else{
+                sortMoviesByPopular();
+            }
+        }
     }
 
     @Override
@@ -82,63 +93,101 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         startActivity(startMovieDetail);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(getString(R.string.request_extra), mRequest);
+    }
+
+    @Override
+    public Loader<Movie[]> onCreateLoader(int id, final Bundle args) {
+        return new AsyncTaskLoader<Movie[]>(this) {
+
+            private Movie[] mMovieData = null;
+
+            @Override
+            public void deliverResult(Movie[] data) {
+                mMovieData = data;
+                super.deliverResult(data);
+            }
+
+            @Override
+            protected void onStartLoading() {
+                if(args == null){
+                    return;
+                }
+
+                if(mMovieData!=null){
+                    deliverResult(mMovieData);
+                }
+                else{
+                    mLoadingIndicator.setVisibility(View.VISIBLE);
+                    forceLoad();
+                }
+            }
+
+            @Override
+            public Movie[] loadInBackground() {
+                String request = args.getString(getString(R.string.request_extra));
+                return MovieResponseBuilder.buildMovieResponse(request);
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Movie[]> loader, Movie[] data) {
+
+        mLoadingIndicator.setVisibility(View.INVISIBLE);
+        mMovieAdapter.setMovieData(data);
+
+        if(data == null){
+            showToast(getString(R.string.movies_fetch_error));
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Movie[]> loader) {
+        //not using this but required to override, leaving empty
+    }
+
     private void sortMoviesByTopRated() {
-        String request = mRequestBuilder.buildTopRatedMoviesRequest();
-        sendMoviesRequest(request);
+        mRequest = mRequestBuilder.buildTopRatedMoviesRequest();
+        sendMoviesRequest();
 
     }
 
     private void sortMoviesByPopular() {
-        String request = mRequestBuilder.buildPopularMoviesRequest();
-        sendMoviesRequest(request);
+        mRequest = mRequestBuilder.buildPopularMoviesRequest();
+        sendMoviesRequest();
     }
 
-    private void sendMoviesRequest(String request) {
+    private void sendMoviesRequest() {
 
         ConnectivityManager cm = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
         if(isConnected){
-            new FetchMoviesTask().execute(request);
+            LoaderManager.LoaderCallbacks<Movie[]> callback = MainActivity.this;
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.request_extra), mRequest);
+
+            Loader<Movie[]> movieLoader = getSupportLoaderManager().getLoader(MOVIES_LOADER_ID);
+
+            if(movieLoader != null){
+                getSupportLoaderManager().restartLoader(MOVIES_LOADER_ID, bundle, callback);
+            }
+            else{
+                getSupportLoaderManager().initLoader(MOVIES_LOADER_ID, bundle, callback);
+            }
         }
         else{
-            showToast(getString(R.string.no_internet_error));
+            showToast(getString(R.string.movies_fetch_error));
         }
     }
 
     private void showToast(String toastText){
         Toast toast = Toast.makeText(this, toastText, Toast.LENGTH_LONG);
         toast.show();
-    }
-
-    public class FetchMoviesTask extends AsyncTask<String, Void, Movie[]> {
-
-        @Override
-        protected void onPostExecute(Movie[] movies) {
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if(movies!=null){
-                mMovieAdapter.setMovieData(movies);
-            }
-            else{
-                Log.e(TAG,"Unable to load movies successfully");
-            }
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mLoadingIndicator.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected Movie[] doInBackground(String... strings) {
-            if (strings.length == 0) {
-                return null;
-            }
-
-            String request = strings[0];
-            return MovieResponseBuilder.buildMovieResponse(request);
-        }
     }
 }
