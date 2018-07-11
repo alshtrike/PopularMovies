@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 
 import com.projects.android.popularmovies.Data.Movie;
 import com.projects.android.popularmovies.Utils.MovieRequestBuilder;
-import com.projects.android.popularmovies.Utils.MovieResponseBuilder;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Movie[]> {
 
@@ -34,12 +32,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String apiKey = BuildConfig.MovieDbApiKey;
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
-
-        if(!apiKey.isEmpty()){
-            mRequestBuilder = new MovieRequestBuilder(apiKey, this);
-        }
+        mRequestBuilder = new MovieRequestBuilder(this);
 
         if(mRequestBuilder!=null){
             mMovieAdapter = new MovieAdapter(this);
@@ -101,37 +95,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     @Override
     public Loader<Movie[]> onCreateLoader(int id, final Bundle args) {
-        return new AsyncTaskLoader<Movie[]>(this) {
-
-            private Movie[] mMovieData = null;
-
-            @Override
-            public void deliverResult(Movie[] data) {
-                mMovieData = data;
-                super.deliverResult(data);
-            }
-
-            @Override
-            protected void onStartLoading() {
-                if(args == null){
-                    return;
-                }
-
-                if(mMovieData!=null){
-                    deliverResult(mMovieData);
-                }
-                else{
-                    mLoadingIndicator.setVisibility(View.VISIBLE);
-                    forceLoad();
-                }
-            }
-
-            @Override
-            public Movie[] loadInBackground() {
-                String request = args.getString(getString(R.string.request_extra));
-                return MovieResponseBuilder.buildMovieResponse(request);
-            }
-        };
+        return new MovieAsyncTaskLoader(args,this, mLoadingIndicator);
     }
 
     @Override
@@ -190,4 +154,5 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         Toast toast = Toast.makeText(this, toastText, Toast.LENGTH_LONG);
         toast.show();
     }
+
 }

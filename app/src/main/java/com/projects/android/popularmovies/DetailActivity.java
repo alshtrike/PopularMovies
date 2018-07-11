@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.projects.android.popularmovies.Data.Movie;
 import com.projects.android.popularmovies.Utils.MoviePosterPathBuilder;
+import com.projects.android.popularmovies.Utils.MovieRequestBuilder;
 import com.squareup.picasso.Picasso;
 
 public class DetailActivity extends AppCompatActivity {
@@ -39,6 +40,11 @@ public class DetailActivity extends AppCompatActivity {
                 year.setText(yearString);
 
                 String movieUrl = MoviePosterPathBuilder.buildMovieDetailPosterPath(this, movie.getImage());
+
+                int movieId = movie.getId();
+                MovieRequestBuilder movieRequestBuilder = new MovieRequestBuilder(this);
+                String reivewsUrl = movieRequestBuilder.buildReviewsRequest(movieId);
+                String previewsUrl = movieRequestBuilder.buildPreviewsRequest(movieId);
 
                 Picasso.with(this)
                         .load(movieUrl)

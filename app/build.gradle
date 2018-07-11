@@ -10,7 +10,6 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField 'String', "MovieDbApiKey", movie_db_api_key
-        resValue 'string', "movie_db_api_key", movie_db_api_key
     }
     buildTypes {
         release {
