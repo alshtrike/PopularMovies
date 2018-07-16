@@ -57,6 +57,13 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorPrimaryDark"/>
 
+                    <ToggleButton
+                        android:id="@+id/tb_favorite_movie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textOn="Unfavorite"
+                        android:textOff="Favorite"/>
+
                 </LinearLayout>
             </LinearLayout>
 
