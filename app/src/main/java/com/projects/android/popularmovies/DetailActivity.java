@@ -1,6 +1,9 @@
 package com.projects.android.popularmovies;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.CompoundButton;
@@ -10,6 +13,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.projects.android.popularmovies.Data.Movie;
+import com.projects.android.popularmovies.Data.MovieContract;
 import com.projects.android.popularmovies.Utils.MoviePosterPathBuilder;
 import com.projects.android.popularmovies.Utils.MovieRequestBuilder;
 import com.squareup.picasso.Picasso;
@@ -20,16 +24,12 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
-
-
         Intent parentIntent = getIntent();
-
         if(parentIntent!=null){
             if(parentIntent.hasExtra(getString(R.string.movie_extra))){
                 Movie movie = (Movie) parentIntent.getSerializableExtra(getString(R.string.movie_extra));
                 fillOutMovieDetailView(movie);
-                handleFavoriteToggle();
+                handleFavoriteToggle(movie);
                 int movieId = movie.getId();
                 MovieRequestBuilder movieRequestBuilder = new MovieRequestBuilder(this);
                 String reviewsUrl = movieRequestBuilder.buildReviewsRequest(movieId);
@@ -40,19 +40,37 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    private void handleFavoriteToggle() {
+    private void handleFavoriteToggle(final Movie movie) {
         ToggleButton favoriteToggle = findViewById(R.id.tb_favorite_movie);
+        favoriteToggle.setChecked(isAlreadyFavorited(movie.getId()));
+        
         favoriteToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    // The toggle is enabled
-                    showToast("Saving to database");
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, movie.getId());
+                    contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_TITLE, movie.getTitle());
+                    Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
+
+                    if(uri != null) {
+                        showToast(uri.toString());
+                    }
+                    else{
+                        showToast("Failed to add to favorites");
+                    }
                 } else {
                     // The toggle is disabled
                     showToast("Remove from database");
                 }
             }
         });
+    }
+
+    private boolean isAlreadyFavorited(int id) {
+        String[] queryId = new String[]{String.valueOf(id)};
+        Cursor cursor = getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, null,
+                MovieContract.MovieEntry.COLUMN_MOVIE_ID+"=?",queryId, null);
+        return cursor.getCount() >0 ? true : false;
     }
 
     private void showToast(String toastText){

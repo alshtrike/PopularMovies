@@ -36,8 +36,45 @@ public class MovieContentProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
-        return null;
+    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+        // Get access to underlying database (read-only for query)
+        final SQLiteDatabase db = mMovieDbHelper.getReadableDatabase();
+
+        // Write URI match code and set a variable to return a Cursor
+        int match = sUriMatcher.match(uri);
+        Cursor retCursor = null;
+
+        // Query for the tasks directory and write a default case
+        switch (match) {
+            // Query for the tasks directory
+            case MOVIES:
+                retCursor =  db.query(TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            case MOVIE_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                String singleMovieSelection = MovieContract.MovieEntry.COLUMN_MOVIE_ID + "=?";
+                String[] singleMovieArgs = new String[]{id};
+
+                retCursor =  db.query(TABLE_NAME,
+                        projection,
+                        singleMovieSelection,
+                        singleMovieArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            default:
+                throwUnknownUriException(uri);
+        }
+
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return retCursor;
     }
 
     @Nullable
@@ -86,7 +123,7 @@ public class MovieContentProvider extends ContentProvider {
         }
         return returnUri;
     }
-    
+
     private void throwUnknownUriException(Uri uri) {
         throw new android.database.SQLException("Failed to insert row into " + uri);
     }
