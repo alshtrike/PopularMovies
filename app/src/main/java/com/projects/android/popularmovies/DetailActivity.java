@@ -34,8 +34,6 @@ public class DetailActivity extends AppCompatActivity {
                 MovieRequestBuilder movieRequestBuilder = new MovieRequestBuilder(this);
                 String reviewsUrl = movieRequestBuilder.buildReviewsRequest(movieId);
                 String previewsUrl = movieRequestBuilder.buildPreviewsRequest(movieId);
-
-
             }
         }
     }
@@ -47,23 +45,32 @@ public class DetailActivity extends AppCompatActivity {
         favoriteToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    ContentValues contentValues = new ContentValues();
-                    contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, movie.getId());
-                    contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_TITLE, movie.getTitle());
-                    Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
-
-                    if(uri != null) {
-                        showToast(uri.toString());
-                    }
-                    else{
-                        showToast("Failed to add to favorites");
-                    }
+                    addMovieToFavorites(movie);
                 } else {
                     // The toggle is disabled
-                    showToast("Remove from database");
+                    showToast("Removed movie from favorites");
                 }
             }
         });
+    }
+
+    private void addMovieToFavorites(Movie movie) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_ID, movie.getId());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_TITLE, movie.getTitle());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_POSTER, movie.getImage());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_SUMMARY, movie.getOverview());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_RATING, movie.getRating());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_RELEASE_YEAR, movie.getDate());
+
+        Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
+
+        if(uri != null) {
+            showToast("Added movie to favorites");
+        }
+        else{
+            showToast("Failed to add movie to favorites");
+        }
     }
 
     private boolean isAlreadyFavorited(int id) {

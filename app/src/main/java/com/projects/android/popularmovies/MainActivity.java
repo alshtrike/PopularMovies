@@ -17,6 +17,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.projects.android.popularmovies.Data.Movie;
+import com.projects.android.popularmovies.Strategies.LoadMoviesFromDbStrategy;
+import com.projects.android.popularmovies.Strategies.LoadMoviesFromUrlStrategy;
+import com.projects.android.popularmovies.Strategies.LoadStrategy;
 import com.projects.android.popularmovies.Utils.MovieRequestBuilder;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Movie[]> {
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private MovieAdapter mMovieAdapter;
     private ProgressBar mLoadingIndicator;
     private String mRequest;
+    private LoadStrategy mLoadStrategy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 mMovieAdapter.setMovieData(null);
                 sortMoviesByTopRated();
                 return true;
+            case R.id.sort_by_favorite:
+                mMovieAdapter.setMovieData(null);
+                sortMoviesByFavorite();
+                return true;
             default: return super.onOptionsItemSelected(item);
         }
     }
@@ -95,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     @Override
     public Loader<Movie[]> onCreateLoader(int id, final Bundle args) {
-        return new MovieAsyncTaskLoader(args,this, mLoadingIndicator);
+        return new MovieAsyncTaskLoader(args,this, mLoadingIndicator, mLoadStrategy);
     }
 
     @Override
@@ -114,6 +122,19 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         //not using this but required to override, leaving empty
     }
 
+    private void sortMoviesByFavorite() {
+        mLoadStrategy = new LoadMoviesFromDbStrategy(this);
+        LoaderManager.LoaderCallbacks<Movie[]> callback = MainActivity.this;
+        Loader<Movie[]> movieLoader = getSupportLoaderManager().getLoader(MOVIES_LOADER_ID);
+        Bundle bundle = new Bundle();
+        if(movieLoader != null){
+            getSupportLoaderManager().restartLoader(MOVIES_LOADER_ID, bundle, callback);
+        }
+        else{
+            getSupportLoaderManager().initLoader(MOVIES_LOADER_ID, bundle, callback);
+        }
+    }
+
     private void sortMoviesByTopRated() {
         mRequest = mRequestBuilder.buildTopRatedMoviesRequest();
         sendMoviesRequest();
@@ -126,16 +147,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     private void sendMoviesRequest() {
-
         ConnectivityManager cm = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-
         if(isConnected){
             LoaderManager.LoaderCallbacks<Movie[]> callback = MainActivity.this;
             Bundle bundle = new Bundle();
             bundle.putString(getString(R.string.request_extra), mRequest);
-
+            mLoadStrategy = new LoadMoviesFromUrlStrategy(bundle, this);
             Loader<Movie[]> movieLoader = getSupportLoaderManager().getLoader(MOVIES_LOADER_ID);
 
             if(movieLoader != null){

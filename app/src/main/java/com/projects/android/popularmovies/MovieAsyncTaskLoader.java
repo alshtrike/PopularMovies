@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.projects.android.popularmovies.Data.Movie;
+import com.projects.android.popularmovies.Strategies.LoadStrategy;
 import com.projects.android.popularmovies.Utils.MovieResponseBuilder;
 
 class MovieAsyncTaskLoader extends AsyncTaskLoader<Movie[]> {
@@ -14,12 +15,14 @@ class MovieAsyncTaskLoader extends AsyncTaskLoader<Movie[]> {
     private final Bundle args;
     private Movie[] mMovieData;
     private ProgressBar mLoadingIndicator;
+    private LoadStrategy mLoadStrategy;
 
-    public MovieAsyncTaskLoader(Bundle args, Context context, ProgressBar loadingIndicator) {
+    public MovieAsyncTaskLoader(Bundle args, Context context, ProgressBar loadingIndicator, LoadStrategy loadStrategy) {
         super(context);
         this.args = args;
         mMovieData = null;
         mLoadingIndicator = loadingIndicator;
+        mLoadStrategy = loadStrategy;
     }
 
     @Override
@@ -44,7 +47,6 @@ class MovieAsyncTaskLoader extends AsyncTaskLoader<Movie[]> {
 
     @Override
     public Movie[] loadInBackground() {
-        String request = args.getString(getContext().getString(R.string.request_extra));
-        return MovieResponseBuilder.buildMovieResponse(request);
+        return mLoadStrategy.load();
     }
 }
