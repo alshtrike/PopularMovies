@@ -8,7 +8,6 @@ import android.widget.ProgressBar;
 
 import com.projects.android.popularmovies.Data.Movie;
 import com.projects.android.popularmovies.Strategies.LoadStrategy;
-import com.projects.android.popularmovies.Utils.MovieResponseBuilder;
 
 class MovieAsyncTaskLoader extends AsyncTaskLoader<Movie[]> {
 

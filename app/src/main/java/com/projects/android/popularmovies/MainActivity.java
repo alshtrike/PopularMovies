@@ -3,10 +3,10 @@ package com.projects.android.popularmovies;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -52,13 +52,26 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             if(savedInstanceState!=null){
                 if(savedInstanceState.containsKey(requestExtra)){
                     mRequest = savedInstanceState.getString(requestExtra);
-                    sendMoviesRequest();
+
+                    if(mRequest.equals(getString(R.string.movies_db_request))){
+                        sortMoviesByFavorite();
+                    }
+                    else{
+                        sendMoviesRequest();
+                    }
                 }
             }
             else{
                 sortMoviesByPopular();
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Bundle bundle = new Bundle();
+        getSupportLoaderManager().restartLoader(MOVIES_LOADER_ID, bundle, this);
     }
 
     @Override
@@ -123,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     private void sortMoviesByFavorite() {
+        mRequest = getString(R.string.movies_db_request);
         mLoadStrategy = new LoadMoviesFromDbStrategy(this);
         LoaderManager.LoaderCallbacks<Movie[]> callback = MainActivity.this;
         Loader<Movie[]> movieLoader = getSupportLoaderManager().getLoader(MOVIES_LOADER_ID);

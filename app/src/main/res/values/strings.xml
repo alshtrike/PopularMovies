@@ -16,4 +16,5 @@
     <string name="poster_description">Movie Poster</string>
     <string name="max_review_score">/10</string>
     <string name="movies_fetch_error">Can\'t fetch movies.</string>
+    <string name="movies_db_request">dbRequest</string>
 </resources>

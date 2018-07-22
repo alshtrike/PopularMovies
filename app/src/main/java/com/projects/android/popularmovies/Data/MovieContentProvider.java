@@ -70,7 +70,7 @@ public class MovieContentProvider extends ContentProvider {
                         sortOrder);
                 break;
             default:
-                throwUnknownUriException(uri);
+                throw new android.database.SQLException("Failed to query uri: " + uri);
         }
 
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
@@ -80,7 +80,7 @@ public class MovieContentProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        return null;
+        throw new UnsupportedOperationException("getType not supported");
     }
 
     @Nullable
@@ -88,14 +88,14 @@ public class MovieContentProvider extends ContentProvider {
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
         final SQLiteDatabase db = mMovieDbHelper.getWritableDatabase();
         int match = sUriMatcher.match(uri);
-        Uri returnUri = null; // URI to be returned
+        Uri returnUri;
 
         switch (match) {
             case MOVIES:
                 returnUri = getInsertUri(uri, contentValues, db);
                 break;
             default:
-                throwUnknownUriException(uri);
+                throw new android.database.SQLException("Failed to insert row into " + uri);
         }
 
         getContext().getContentResolver().notifyChange(uri, null);
@@ -104,12 +104,32 @@ public class MovieContentProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+        // Get access to the database and write URI matching code to recognize a single item
+        final SQLiteDatabase db = mMovieDbHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+        int tasksDeleted;
+
+        switch (match) {
+            case MOVIE_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                String singleMovieSelection = MovieContract.MovieEntry.COLUMN_MOVIE_ID + "=?";
+                String[] singleMovieArgs = new String[]{id};
+                tasksDeleted = db.delete(TABLE_NAME, singleMovieSelection, singleMovieArgs);
+                break;
+            default:
+                throw new android.database.SQLException("Failed to delete: " + uri);
+        }
+
+        if (tasksDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return tasksDeleted;
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+        throw new UnsupportedOperationException("update is not supported");
     }
 
 
@@ -122,10 +142,6 @@ public class MovieContentProvider extends ContentProvider {
             throw new android.database.SQLException("Failed to insert row into " + uri);
         }
         return returnUri;
-    }
-
-    private void throwUnknownUriException(Uri uri) {
-        throw new android.database.SQLException("Failed to insert row into " + uri);
     }
 
 }

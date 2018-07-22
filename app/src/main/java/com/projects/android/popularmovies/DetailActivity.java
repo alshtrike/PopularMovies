@@ -4,8 +4,9 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.projects.android.popularmovies.Utils.MovieRequestBuilder;
 import com.squareup.picasso.Picasso;
 
 public class DetailActivity extends AppCompatActivity {
+    private static final String TAG = DetailActivity.class.getCanonicalName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,11 @@ public class DetailActivity extends AppCompatActivity {
                 if (isChecked) {
                     addMovieToFavorites(movie);
                 } else {
-                    // The toggle is disabled
+                    String stringId = String.valueOf(movie.getId());
+                    Uri uri = MovieContract.MovieEntry.CONTENT_URI;
+                    uri = uri.buildUpon().appendPath(stringId).build();
+                    Log.d(TAG, uri.toString());
+                    getContentResolver().delete(uri, null, null);
                     showToast("Removed movie from favorites");
                 }
             }
