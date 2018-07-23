@@ -77,6 +77,62 @@
                 android:paddingLeft="@dimen/movie_summary_horiz_padding"
                 android:paddingRight="@dimen/movie_summary_horiz_padding"/>
 
+            <View
+                android:background="@color/colorPrimary"
+                android:layout_height="@dimen/movie_detail_separator_line"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="@dimen/movie_summary_horiz_padding"
+                android:layout_marginRight="@dimen/movie_summary_horiz_padding"
+                android:layout_marginTop="@dimen/movie_summary_horiz_padding"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/subheader_text_size"
+                android:layout_margin="@dimen/movie_summary_horiz_padding"
+                android:text="@string/movie_detail_trailers"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_trailers"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <ProgressBar
+                android:id="@+id/pb_trailers_loading_indicator"
+                android:layout_height="@dimen/loading_indicator_size"
+                android:layout_width="@dimen/loading_indicator_size"
+                android:layout_gravity="center"
+                android:visibility="invisible" />
+
+            <View
+                android:background="@color/colorPrimary"
+                android:layout_height="@dimen/movie_detail_separator_line"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="@dimen/movie_summary_horiz_padding"
+                android:layout_marginRight="@dimen/movie_summary_horiz_padding"
+                android:layout_marginTop="@dimen/movie_summary_horiz_padding" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/subheader_text_size"
+                android:layout_margin="@dimen/movie_summary_horiz_padding"
+                android:text="@string/movie_detail_reviews"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_reviews"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <ProgressBar
+                android:id="@+id/pb_reviews_loading_indicator"
+                android:layout_height="@dimen/loading_indicator_size"
+                android:layout_width="@dimen/loading_indicator_size"
+                android:layout_gravity="center"
+                android:visibility="invisible" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

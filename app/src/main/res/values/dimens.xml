@@ -11,5 +11,8 @@
     <dimen name="movie_detail_poster_height">190dp</dimen>
     <dimen name="movie_detail_date_size">30sp</dimen>
     <dimen name="movie_summary_size">16sp</dimen>
-    <dimen name="movie_summary_horiz_padding">10dp</dimen>
+    <dimen name="movie_summary_horiz_padding">15dp</dimen>
+    <dimen name="movie_detail_separator_line">1dp</dimen>
+    <dimen name="loading_indicator_size">42dp</dimen>
+    <dimen name="subheader_text_size">20sp</dimen>
 </resources>
