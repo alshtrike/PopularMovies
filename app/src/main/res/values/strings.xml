@@ -12,7 +12,9 @@
     <string name="api_key_field">api_key=</string>
     <string name="title_activity_detail">Movie Detail</string>
     <string name="movie_extra">movie</string>
-    <string name="request_extra">requestUrl</string>
+    <string name="movie_request_extra">movieRequestUrl</string>
+    <string name="review_request_extra">reviewRequestUrl</string>
+    <string name="trailer_request_extra">trailerRequestUrl</string>
     <string name="poster_description">Movie Poster</string>
     <string name="max_review_score">/10</string>
     <string name="movies_fetch_error">Can\'t fetch movies.</string>

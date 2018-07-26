@@ -29,7 +29,7 @@ public class DetailActivity extends AppCompatActivity {
         Intent parentIntent = getIntent();
         if(parentIntent!=null){
             if(parentIntent.hasExtra(getString(R.string.movie_extra))){
-                Movie movie = (Movie) parentIntent.getSerializableExtra(getString(R.string.movie_extra));
+                Movie movie = (Movie) parentIntent.getParcelableExtra(getString(R.string.movie_extra));
                 fillOutMovieDetailView(movie);
                 handleFavoriteToggle(movie);
                 int movieId = movie.getId();

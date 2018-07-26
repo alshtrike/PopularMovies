@@ -6,7 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-class MovieResponseSerializer {
+public class MovieResponseSerializer implements ResponseSerializer<Movie[]>{
 
     /*the response we're looking for is inside the results array*/
     private final static String RESULTS = "results";
@@ -17,7 +17,7 @@ class MovieResponseSerializer {
     private final static String DATE = "release_date";
     private final static String MOVIE_ID = "id";
 
-    public static Movie[] serializeJSON(String json) throws JSONException{
+    public Movie[] serializeResponse(String json) throws JSONException{
         Movie[] movieArray;
 
         JSONObject movieJson = new JSONObject(json);

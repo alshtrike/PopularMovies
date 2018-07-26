@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.projects.android.popularmovies.Data.Movie;
+import com.projects.android.popularmovies.Data.MovieReview;
+import com.projects.android.popularmovies.Data.MovieTrailer;
 
 import org.json.JSONException;
 
@@ -14,22 +16,22 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-public class MovieResponseBuilder {
+public class MovieResponseBuilder<T> {
 
     private static final String TAG = MovieResponseBuilder.class.getSimpleName();
+    private final ResponseSerializer<T> mResponseSerializer;
 
-    public static Movie[] buildMovieResponse(String request){
-       String jsonResponse = null;
+    public MovieResponseBuilder(ResponseSerializer<T> responseSerializer){
+        mResponseSerializer = responseSerializer;
+    }
+    
+    public T buildResponse(String request){
 
-        try {
-            jsonResponse = getJsonResponse(request);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String jsonResponse = getJsonResponse(request);
 
         if(jsonResponse!=null){
             try {
-                return MovieResponseSerializer.serializeJSON(jsonResponse);
+                return mResponseSerializer.serializeResponse(jsonResponse);
             } catch (JSONException e) {
                 e.printStackTrace();
                 return null;
@@ -38,12 +40,12 @@ public class MovieResponseBuilder {
         return null;
     }
 
-    private static String getJsonResponse(String request) throws IOException {
+    private static String getJsonResponse(String request)  {
         URL requestUrl = buildUrl(request);
-
-        //taken from sunshine exercise
-        HttpURLConnection urlConnection = (HttpURLConnection) requestUrl.openConnection();
+        HttpURLConnection urlConnection = null;
         try {
+            //taken from sunshine exercise
+            urlConnection = (HttpURLConnection) requestUrl.openConnection();
             InputStream in = urlConnection.getInputStream();
 
             Scanner scanner = new Scanner(in);
@@ -55,8 +57,13 @@ public class MovieResponseBuilder {
             } else {
                 return null;
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         } finally {
-            urlConnection.disconnect();
+            if(urlConnection != null){
+                urlConnection.disconnect();
+            }
         }
     }
 

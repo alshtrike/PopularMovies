@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setAdapter(mMovieAdapter);
 
-            String requestExtra = getString(R.string.request_extra);
+            String requestExtra = getString(R.string.movie_request_extra);
             if(savedInstanceState!=null){
                 if(savedInstanceState.containsKey(requestExtra)){
                     mRequest = savedInstanceState.getString(requestExtra);
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(getString(R.string.request_extra), mRequest);
+        outState.putString(getString(R.string.movie_request_extra), mRequest);
     }
 
     @Override
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if(isConnected){
             LoaderManager.LoaderCallbacks<Movie[]> callback = MainActivity.this;
             Bundle bundle = new Bundle();
-            bundle.putString(getString(R.string.request_extra), mRequest);
+            bundle.putString(getString(R.string.movie_request_extra), mRequest);
             mLoadStrategy = new LoadMoviesFromUrlStrategy(bundle, this);
             Loader<Movie[]> movieLoader = getSupportLoaderManager().getLoader(MOVIES_LOADER_ID);
 

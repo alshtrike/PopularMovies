@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.widget.ProgressBar;
 
 import com.projects.android.popularmovies.Data.MovieReview;
+import com.projects.android.popularmovies.R;
+import com.projects.android.popularmovies.Utils.MovieResponseBuilder;
+import com.projects.android.popularmovies.Utils.MovieReviewResponseSerializer;
 
 public class MovieReviewAsyncLoader extends AsyncLoader<MovieReview[]>{
 
@@ -15,6 +18,9 @@ public class MovieReviewAsyncLoader extends AsyncLoader<MovieReview[]>{
 
     @Override
     public MovieReview[] loadInBackground() {
-        return new MovieReview[0];
+        String request = mArgs.getString(getContext().getString(R.string.trailer_request_extra));
+        MovieReviewResponseSerializer responseSerializer = new MovieReviewResponseSerializer();
+        MovieResponseBuilder<MovieReview[]> responseBuilder = new MovieResponseBuilder<>(responseSerializer);
+        return responseBuilder.buildResponse(request);
     }
 }
