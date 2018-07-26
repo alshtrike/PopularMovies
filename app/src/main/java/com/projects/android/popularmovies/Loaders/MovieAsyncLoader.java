@@ -7,11 +7,11 @@ import android.widget.ProgressBar;
 import com.projects.android.popularmovies.Data.Movie;
 import com.projects.android.popularmovies.Strategies.LoadStrategy;
 
-public class MovieAsyncTaskLoader extends AsyncLoader<Movie[]> {
+public class MovieAsyncLoader extends AsyncLoader<Movie[]> {
 
     private LoadStrategy mLoadStrategy;
 
-    public MovieAsyncTaskLoader(Bundle args, Context context, ProgressBar loadingIndicator, LoadStrategy loadStrategy) {
+    public MovieAsyncLoader(Bundle args, Context context, ProgressBar loadingIndicator, LoadStrategy loadStrategy) {
         super(args, context, loadingIndicator);
         mLoadStrategy = loadStrategy;
     }

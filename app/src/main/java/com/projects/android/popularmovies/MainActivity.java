@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.projects.android.popularmovies.Data.Movie;
-import com.projects.android.popularmovies.Loaders.MovieAsyncTaskLoader;
+import com.projects.android.popularmovies.Loaders.MovieAsyncLoader;
 import com.projects.android.popularmovies.Strategies.LoadMoviesFromDbStrategy;
 import com.projects.android.popularmovies.Strategies.LoadMoviesFromUrlStrategy;
 import com.projects.android.popularmovies.Strategies.LoadStrategy;
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     @Override
     public Loader<Movie[]> onCreateLoader(int id, final Bundle args) {
-        return new MovieAsyncTaskLoader(args,this, mLoadingIndicator, mLoadStrategy);
+        return new MovieAsyncLoader(args,this, mLoadingIndicator, mLoadStrategy);
     }
 
     @Override

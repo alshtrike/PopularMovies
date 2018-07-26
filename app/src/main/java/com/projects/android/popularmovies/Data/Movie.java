@@ -1,8 +1,9 @@
 package com.projects.android.popularmovies.Data;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Movie implements Serializable {
+public class Movie implements Parcelable {
 
     private int mId;
     private String mTitle;
@@ -10,6 +11,32 @@ public class Movie implements Serializable {
     private String mOverview;
     private String mRating;
     private String mDate;
+
+    public Movie(){
+        //default empty constructor
+    }
+
+    public Movie(Parcel in) {
+        mId = in.readInt();
+        mTitle = in.readString();
+        mImage = in.readString();
+        mOverview = in.readString();
+        mRating = in.readString();
+        mDate = in.readString();
+    }
+
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     public String getTitle() {
         return mTitle;
@@ -57,5 +84,20 @@ public class Movie implements Serializable {
 
     public void setId(int mId) {
         this.mId = mId;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(mId);
+        parcel.writeString(mTitle);
+        parcel.writeString(mImage);
+        parcel.writeString(mOverview);
+        parcel.writeString(mRating);
+        parcel.writeString(mDate);
     }
 }
