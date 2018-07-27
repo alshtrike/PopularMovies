@@ -2,11 +2,9 @@ package com.projects.android.popularmovies.Utils;
 
 import com.projects.android.popularmovies.Data.MovieTrailer;
 
+import org.json.JSONArray;
 import org.json.JSONException;
-
-/**
- * Created by alshtray on 7/25/18.
- */
+import org.json.JSONObject;
 
 public class MovieTrailerResponseSerializer implements ResponseSerializer<MovieTrailer[]> {
     private final static String RESULTS = "results";
@@ -15,7 +13,26 @@ public class MovieTrailerResponseSerializer implements ResponseSerializer<MovieT
 
     @Override
     public MovieTrailer[] serializeResponse(String json) throws JSONException {
-        //TODO fill out method
-        return new MovieTrailer[0];
+        MovieTrailer[] trailers;
+        JSONObject trailerJson = new JSONObject(json);
+        JSONArray trailerJsonArray = trailerJson.optJSONArray(RESULTS);
+        int sizeOfReviewArray = trailerJsonArray.length();
+        trailers = new MovieTrailer[sizeOfReviewArray];
+
+        for(int i=0; i<sizeOfReviewArray; i++){
+            JSONObject review = trailerJsonArray.optJSONObject(i);
+            trailers[i] = parseTrailer(review);
+        }
+        return trailers;
+    }
+
+    private MovieTrailer parseTrailer(JSONObject trailerJson) {
+        String trailerName = trailerJson.optString(TRAILER_NAME);
+        String trailerLink = trailerJson.optString(TRAILER_LINK);
+
+        MovieTrailer trailer = new MovieTrailer();
+        trailer.setTrailerName(trailerName);
+        trailer.setLinkToTrailer(trailerLink);
+        return trailer;
     }
 }
