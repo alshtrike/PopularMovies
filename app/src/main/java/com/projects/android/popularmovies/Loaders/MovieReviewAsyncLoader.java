@@ -18,7 +18,7 @@ public class MovieReviewAsyncLoader extends AsyncLoader<MovieReview[]>{
 
     @Override
     public MovieReview[] loadInBackground() {
-        String request = mArgs.getString(getContext().getString(R.string.trailer_request_extra));
+        String request = mArgs.getString(getContext().getString(R.string.review_request_extra));
         MovieReviewResponseSerializer responseSerializer = new MovieReviewResponseSerializer();
         MovieResponseBuilder<MovieReview[]> responseBuilder = new MovieResponseBuilder<>(responseSerializer);
         return responseBuilder.buildResponse(request);

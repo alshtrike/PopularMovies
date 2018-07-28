@@ -9,11 +9,11 @@ import android.widget.ProgressBar;
 
 abstract class AsyncLoader<T>  extends AsyncTaskLoader<T> {
 
-    protected final Bundle mArgs;
+    final Bundle mArgs;
     private T mData;
     private ProgressBar mLoadingIndicator;
 
-    public AsyncLoader(Bundle args, Context context, ProgressBar loadingIndicator){
+    AsyncLoader(Bundle args, Context context, ProgressBar loadingIndicator){
         super(context);
         this.mArgs = args;
         mData = null;

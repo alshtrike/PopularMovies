@@ -1,41 +1,144 @@
 package com.projects.android.popularmovies;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.projects.android.popularmovies.Data.Movie;
 import com.projects.android.popularmovies.Data.MovieContract;
+import com.projects.android.popularmovies.Data.MovieReview;
+import com.projects.android.popularmovies.Data.MovieTrailer;
+import com.projects.android.popularmovies.Loaders.MovieReviewAsyncLoader;
+import com.projects.android.popularmovies.Loaders.MovieTrailerAsyncLoader;
 import com.projects.android.popularmovies.Utils.MoviePosterPathBuilder;
 import com.projects.android.popularmovies.Utils.MovieRequestBuilder;
 import com.squareup.picasso.Picasso;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements ReviewAdapter.ReviewAdapterOnClickHandler, TrailerAdapter.TrailerAdapterOnClickHandler{
     private static final String TAG = DetailActivity.class.getCanonicalName();
+
+    private static final int REVIEW_LOADER_ID = 1;
+    private static final int TRAILER_LOADER_ID = 2;
+
+    private ProgressBar mReviewLoadingIndicator;
+    private ProgressBar mTrailerLoadingIndicator;
+    private TrailerAdapter mTrailerAdapter;
+    private ReviewAdapter mReviewAdapter;
+    private Context mContext = this;
+
+    private LoaderManager.LoaderCallbacks<MovieReview[]> mReviewLoader = new LoaderManager.LoaderCallbacks<MovieReview[]>() {
+        @Override
+        public Loader<MovieReview[]> onCreateLoader(int id, Bundle args) {
+            return new MovieReviewAsyncLoader(args, mContext, mReviewLoadingIndicator);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<MovieReview[]> loader, MovieReview[] data) {
+            mReviewLoadingIndicator.setVisibility(View.INVISIBLE);
+            mReviewAdapter.setReviewData(data);
+
+            if(data == null){
+                showToast(getString(R.string.movies_fetch_error));
+            }
+        }
+
+        @Override
+        public void onLoaderReset(Loader<MovieReview[]> loader) {
+            //not using this but required to override, leaving empty
+        }
+    };
+
+    private LoaderManager.LoaderCallbacks<MovieTrailer[]> mTrailerLoader = new LoaderManager.LoaderCallbacks<MovieTrailer[]>() {
+        @Override
+        public Loader<MovieTrailer[]> onCreateLoader(int id, Bundle args) {
+            return new MovieTrailerAsyncLoader(args, mContext, mTrailerLoadingIndicator);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<MovieTrailer[]> loader, MovieTrailer[] data) {
+            mTrailerLoadingIndicator.setVisibility(View.INVISIBLE);
+            mTrailerAdapter.setTrailerData(data);
+
+            if(data == null){
+                showToast(getString(R.string.movies_fetch_error));
+            }
+        }
+
+        @Override
+        public void onLoaderReset(Loader<MovieTrailer[]> loader) {
+            //not using this but required to override, leaving empty
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
         Intent parentIntent = getIntent();
+
         if(parentIntent!=null){
             if(parentIntent.hasExtra(getString(R.string.movie_extra))){
                 Movie movie = (Movie) parentIntent.getParcelableExtra(getString(R.string.movie_extra));
                 fillOutMovieDetailView(movie);
                 handleFavoriteToggle(movie);
                 int movieId = movie.getId();
+
                 MovieRequestBuilder movieRequestBuilder = new MovieRequestBuilder(this);
+                mReviewAdapter = new ReviewAdapter(this);
+                mTrailerAdapter = new TrailerAdapter(this);
+                mReviewLoadingIndicator = findViewById(R.id.pb_reviews_loading_indicator);
+                mTrailerLoadingIndicator = findViewById(R.id.pb_trailers_loading_indicator);
+
+                RecyclerView trailerRv = findViewById(R.id.rv_trailers);
+                trailerRv.setAdapter(mTrailerAdapter);
+                trailerRv.setLayoutManager(new LinearLayoutManager(this));
+                trailerRv.setHasFixedSize(true);
+
+                RecyclerView reviewRv = findViewById(R.id.rv_reviews);
+                reviewRv.setAdapter(mReviewAdapter);
+                reviewRv.setLayoutManager(new LinearLayoutManager(this));
+                reviewRv.setHasFixedSize(true);
+
+                Loader<MovieReview[]> reviewLoader = getSupportLoaderManager().getLoader(REVIEW_LOADER_ID);
+                Loader<MovieTrailer[]> trailerLoader = getSupportLoaderManager().getLoader(TRAILER_LOADER_ID);
+
+                Bundle reviewBundle = new Bundle();
+                Bundle trailerBundle = new Bundle();
+
                 String reviewsUrl = movieRequestBuilder.buildReviewsRequest(movieId);
-                String previewsUrl = movieRequestBuilder.buildPreviewsRequest(movieId);
+                String trailersUrl = movieRequestBuilder.buildPreviewsRequest(movieId);
+
+                reviewBundle.putString(getString(R.string.review_request_extra), reviewsUrl);
+                trailerBundle.putString(getString(R.string.trailer_request_extra), trailersUrl);
+
+                if(reviewLoader==null){
+                    getSupportLoaderManager().restartLoader(REVIEW_LOADER_ID, reviewBundle, mReviewLoader);
+                }else{
+                    getSupportLoaderManager().initLoader(REVIEW_LOADER_ID, reviewBundle, mReviewLoader);
+                }
+
+                if(trailerLoader==null){
+                    getSupportLoaderManager().restartLoader(TRAILER_LOADER_ID, trailerBundle, mTrailerLoader);
+                }else{
+                    getSupportLoaderManager().initLoader(TRAILER_LOADER_ID, trailerBundle, mTrailerLoader);
+                }
             }
         }
     }
@@ -118,5 +221,17 @@ public class DetailActivity extends AppCompatActivity {
     private String getMovieReleaseYear(String date){
         String[] datePortions =  date.split("-");
         return datePortions[0];
+    }
+
+    @Override
+    public void onClick(MovieReview review) {
+        //TODO send intent to open page w/ review
+
+    }
+
+    @Override
+    public void onClick(MovieTrailer trailer) {
+        //TODO send intent to open youtube video
+
     }
 }

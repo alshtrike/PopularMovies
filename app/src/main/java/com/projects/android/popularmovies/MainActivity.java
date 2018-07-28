@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             mMovieAdapter = new MovieAdapter(this);
             int numOfColumns = 2;
             GridLayoutManager layoutManager = new GridLayoutManager(this, numOfColumns);
-            RecyclerView mRecyclerView = findViewById(R.id.rv_movies);
-            mRecyclerView.setLayoutManager(layoutManager);
-            mRecyclerView.setHasFixedSize(true);
-            mRecyclerView.setAdapter(mMovieAdapter);
+            RecyclerView movieRecyclerView = findViewById(R.id.rv_movies);
+            movieRecyclerView.setLayoutManager(layoutManager);
+            movieRecyclerView.setHasFixedSize(true);
+            movieRecyclerView.setAdapter(mMovieAdapter);
 
             String requestExtra = getString(R.string.movie_request_extra);
             if(savedInstanceState!=null){
