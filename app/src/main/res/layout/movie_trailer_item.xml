@@ -4,6 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--TODO fill this out-->
+    <TextView
+        android:id="@+id/tv_movie_trailer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item_height"
+        android:textSize="@dimen/subheader_text_size"/>
 
 </LinearLayout>
