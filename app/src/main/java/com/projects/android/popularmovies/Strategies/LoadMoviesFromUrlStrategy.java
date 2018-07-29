@@ -9,8 +9,8 @@ import com.projects.android.popularmovies.Utils.MovieResponseBuilder;
 import com.projects.android.popularmovies.Utils.MovieResponseSerializer;
 
 public class LoadMoviesFromUrlStrategy implements LoadStrategy {
-    private Bundle mArgs;
-    private Context mContext;
+    private final Bundle mArgs;
+    private final Context mContext;
 
     public LoadMoviesFromUrlStrategy(Bundle args, Context context){
         mArgs=args;

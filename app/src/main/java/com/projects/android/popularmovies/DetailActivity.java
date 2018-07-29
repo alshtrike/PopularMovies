@@ -40,9 +40,9 @@ public class DetailActivity extends AppCompatActivity implements ReviewAdapter.R
     private ProgressBar mTrailerLoadingIndicator;
     private TrailerAdapter mTrailerAdapter;
     private ReviewAdapter mReviewAdapter;
-    private Context mContext = this;
+    private final Context mContext = this;
 
-    private LoaderManager.LoaderCallbacks<MovieReview[]> mReviewLoader = new LoaderManager.LoaderCallbacks<MovieReview[]>() {
+    private final LoaderManager.LoaderCallbacks<MovieReview[]> mReviewLoader = new LoaderManager.LoaderCallbacks<MovieReview[]>() {
         @Override
         public Loader<MovieReview[]> onCreateLoader(int id, Bundle args) {
             return new MovieReviewAsyncLoader(args, mContext, mReviewLoadingIndicator);
@@ -64,7 +64,7 @@ public class DetailActivity extends AppCompatActivity implements ReviewAdapter.R
         }
     };
 
-    private LoaderManager.LoaderCallbacks<MovieTrailer[]> mTrailerLoader = new LoaderManager.LoaderCallbacks<MovieTrailer[]>() {
+    private final LoaderManager.LoaderCallbacks<MovieTrailer[]> mTrailerLoader = new LoaderManager.LoaderCallbacks<MovieTrailer[]>() {
         @Override
         public Loader<MovieTrailer[]> onCreateLoader(int id, Bundle args) {
             return new MovieTrailerAsyncLoader(args, mContext, mTrailerLoadingIndicator);
@@ -95,7 +95,7 @@ public class DetailActivity extends AppCompatActivity implements ReviewAdapter.R
 
         if(parentIntent!=null){
             if(parentIntent.hasExtra(getString(R.string.movie_extra))){
-                Movie movie = (Movie) parentIntent.getParcelableExtra(getString(R.string.movie_extra));
+                Movie movie = parentIntent.getParcelableExtra(getString(R.string.movie_extra));
                 fillOutMovieDetailView(movie);
                 handleFavoriteToggle(movie);
                 int movieId = movie.getId();
@@ -184,7 +184,9 @@ public class DetailActivity extends AppCompatActivity implements ReviewAdapter.R
         String[] queryId = new String[]{String.valueOf(id)};
         Cursor cursor = getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, null,
                 MovieContract.MovieEntry.COLUMN_MOVIE_ID+"=?",queryId, null);
-        return cursor.getCount() >0 ? true : false;
+        int size = cursor.getCount();
+        cursor.close();
+        return size > 0;
     }
 
     private void showToast(String toastText){

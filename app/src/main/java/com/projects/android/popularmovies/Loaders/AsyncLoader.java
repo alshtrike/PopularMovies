@@ -11,7 +11,7 @@ abstract class AsyncLoader<T>  extends AsyncTaskLoader<T> {
 
     final Bundle mArgs;
     private T mData;
-    private ProgressBar mLoadingIndicator;
+    private final ProgressBar mLoadingIndicator;
 
     AsyncLoader(Bundle args, Context context, ProgressBar loadingIndicator){
         super(context);

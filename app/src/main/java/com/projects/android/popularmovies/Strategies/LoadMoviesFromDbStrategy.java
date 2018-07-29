@@ -8,7 +8,7 @@ import com.projects.android.popularmovies.Data.MovieContract;
 
 public class LoadMoviesFromDbStrategy implements LoadStrategy {
 
-    private Context mContext;
+    private final Context mContext;
 
     public LoadMoviesFromDbStrategy(Context context){
         mContext = context;

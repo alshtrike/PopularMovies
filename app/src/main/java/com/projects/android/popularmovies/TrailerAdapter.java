@@ -5,18 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.projects.android.popularmovies.Data.Movie;
 import com.projects.android.popularmovies.Data.MovieTrailer;
-import com.projects.android.popularmovies.Utils.MoviePosterPathBuilder;
-import com.squareup.picasso.Picasso;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerAdapterViewHolder>{
 
     private MovieTrailer[] mTrailerData;
-    private Context mContext;
     private final TrailerAdapterOnClickHandler mClickHandler;
 
     public TrailerAdapter(TrailerAdapterOnClickHandler clickHandler){
@@ -25,7 +20,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
 
     @Override
     public TrailerAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mContext = parent.getContext();
+        Context mContext = parent.getContext();
         int listdItemLayoutId = R.layout.movie_trailer_item;
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(listdItemLayoutId, parent, false);

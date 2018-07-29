@@ -15,12 +15,12 @@ import static com.projects.android.popularmovies.Data.MovieContract.MovieEntry.T
 
 public class MovieContentProvider extends ContentProvider {
 
-    public static final int MOVIES = 100;
-    public static final int MOVIE_WITH_ID = 101;
+    private static final int MOVIES = 100;
+    private static final int MOVIE_WITH_ID = 101;
     private MovieDbHelper mMovieDbHelper;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
-    public static UriMatcher buildUriMatcher() {
+    private static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.PATH_MOVIES, MOVIES);
         uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.PATH_MOVIES + "/#", MOVIE_WITH_ID);

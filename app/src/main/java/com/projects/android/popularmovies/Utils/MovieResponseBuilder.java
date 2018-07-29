@@ -3,10 +3,6 @@ package com.projects.android.popularmovies.Utils;
 import android.net.Uri;
 import android.util.Log;
 
-import com.projects.android.popularmovies.Data.Movie;
-import com.projects.android.popularmovies.Data.MovieReview;
-import com.projects.android.popularmovies.Data.MovieTrailer;
-
 import org.json.JSONException;
 
 import java.io.IOException;

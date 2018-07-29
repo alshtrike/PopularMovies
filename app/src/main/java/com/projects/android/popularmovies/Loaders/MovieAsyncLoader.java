@@ -9,7 +9,7 @@ import com.projects.android.popularmovies.Strategies.LoadStrategy;
 
 public class MovieAsyncLoader extends AsyncLoader<Movie[]> {
 
-    private LoadStrategy mLoadStrategy;
+    private final LoadStrategy mLoadStrategy;
 
     public MovieAsyncLoader(Bundle args, Context context, ProgressBar loadingIndicator, LoadStrategy loadStrategy) {
         super(args, context, loadingIndicator);

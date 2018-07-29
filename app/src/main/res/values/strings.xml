@@ -1,25 +1,27 @@
 <resources>
     <string name="app_name">Popular Movies</string>
-    <string name="movie_db_base_url">https://api.themoviedb.org/3/movie/</string>
-    <string name="base_image_url">https://image.tmdb.org/t/p/</string>
-    <string name="image_size_grid">w185</string>
-    <string name="image_size_detail">w92</string>
-    <string name="movie_db_popular_request">popular</string>
-    <string name="movie_db_top_rated_request">top_rated</string>
+    <string name="movie_db_base_url" translatable="false">https://api.themoviedb.org/3/movie/</string>
+    <string name="base_image_url" translatable="false">https://image.tmdb.org/t/p/</string>
+    <string name="image_size_grid" translatable="false">w185</string>
+    <string name="image_size_detail" translatable="false">w92</string>
+    <string name="movie_db_popular_request" translatable="false">popular</string>
+    <string name="movie_db_top_rated_request" translatable="false">top_rated</string>
     <string name="sort_by_popular">Sort by: Popular</string>
     <string name="sort_by_top_rated">Sort by: Top Rated</string>
     <string name="sort_by_favorite">Sort by: Favorites</string>
-    <string name="api_key_field">api_key=</string>
+    <string name="api_key_field" translatable="false">api_key=</string>
     <string name="title_activity_detail">Movie Detail</string>
-    <string name="movie_extra">movie</string>
-    <string name="movie_request_extra">movieRequestUrl</string>
-    <string name="review_request_extra">reviewRequestUrl</string>
-    <string name="trailer_request_extra">trailerRequestUrl</string>
+    <string name="movie_extra" translatable="false">movie</string>
+    <string name="movie_request_extra" translatable="false">movieRequestUrl</string>
+    <string name="review_request_extra" translatable="false">reviewRequestUrl</string>
+    <string name="trailer_request_extra" translatable="false">trailerRequestUrl</string>
     <string name="poster_description">Movie Poster</string>
-    <string name="max_review_score">/10</string>
+    <string name="max_review_score" translatable="false">/10</string>
     <string name="movies_fetch_error">Can\'t fetch movies.</string>
-    <string name="movies_db_request">dbRequest</string>
+    <string name="movies_db_request" translatable="false">dbRequest</string>
     <string name="movie_detail_reviews">Reviews</string>
     <string name="movie_detail_trailers">Trailers</string>
-    <string name="youtube_url">"http://www.youtube.com/watch?v="</string>
+    <string name="youtube_url" translatable="false">"http://www.youtube.com/watch?v="</string>
+    <string name="toggle_text_on">Unfavorite</string>
+    <string name="toggle_text_off">Favorite</string>
 </resources>

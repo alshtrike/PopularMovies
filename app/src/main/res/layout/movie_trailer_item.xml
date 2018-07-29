@@ -10,7 +10,7 @@
         android:layout_height="@dimen/trailer_list_item_height"
         android:textSize="@dimen/subheader_text_size"
         android:textColor="@color/colorLinkText"
-        android:layout_marginLeft="@dimen/list_item_padding"
+        android:layout_marginStart="@dimen/list_item_padding"
         android:layout_marginTop="@dimen/list_item_padding"/>
 
     <View

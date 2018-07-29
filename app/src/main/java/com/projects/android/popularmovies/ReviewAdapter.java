@@ -12,7 +12,6 @@ import com.projects.android.popularmovies.Data.MovieReview;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdapterViewHolder>{
 
     private MovieReview[] mReviewData;
-    private Context mContext;
     private final ReviewAdapterOnClickHandler mClickHandler;
 
     public ReviewAdapter(ReviewAdapterOnClickHandler clickHandler){
@@ -21,7 +20,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
 
     @Override
     public ReviewAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mContext = parent.getContext();
+        Context mContext = parent.getContext();
         int listItemLayoutId = R.layout.movie_review_item;
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(listItemLayoutId, parent, false);
