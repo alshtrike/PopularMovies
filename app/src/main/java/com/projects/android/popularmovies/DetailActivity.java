@@ -109,12 +109,10 @@ public class DetailActivity extends AppCompatActivity implements ReviewAdapter.R
                 RecyclerView trailerRv = findViewById(R.id.rv_trailers);
                 trailerRv.setAdapter(mTrailerAdapter);
                 trailerRv.setLayoutManager(new LinearLayoutManager(this));
-                trailerRv.setHasFixedSize(true);
 
                 RecyclerView reviewRv = findViewById(R.id.rv_reviews);
                 reviewRv.setAdapter(mReviewAdapter);
                 reviewRv.setLayoutManager(new LinearLayoutManager(this));
-                reviewRv.setHasFixedSize(true);
 
                 Loader<MovieReview[]> reviewLoader = getSupportLoaderManager().getLoader(REVIEW_LOADER_ID);
                 Loader<MovieTrailer[]> trailerLoader = getSupportLoaderManager().getLoader(TRAILER_LOADER_ID);
@@ -225,13 +223,14 @@ public class DetailActivity extends AppCompatActivity implements ReviewAdapter.R
 
     @Override
     public void onClick(MovieReview review) {
-        //TODO send intent to open page w/ review
-
+        Intent trailerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(review.getUrl()));
+        startActivity(trailerIntent);
     }
 
     @Override
     public void onClick(MovieTrailer trailer) {
-        //TODO send intent to open youtube video
-
+        String videoUrl = getString(R.string.youtube_url)+trailer.getLinkToTrailer();
+        Intent trailerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl));
+        startActivity(trailerIntent);
     }
 }

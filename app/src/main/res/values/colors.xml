@@ -6,4 +6,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorMovieTitle">#159588</color>
     <color name="colorDarkText">#818181</color>
+    <color name="colorLinkText">#0000EE</color>
 </resources>
