@@ -20,7 +20,7 @@ public class LoadMoviesFromDbStrategy implements LoadStrategy {
                 null,
                 null,
                 null,
-                MovieContract.MovieEntry.COLUMN_MOVIE_ID);
+                MovieContract.MovieEntry._ID);
         return getMovieArrayFromCursor(cursor);
 
     }
