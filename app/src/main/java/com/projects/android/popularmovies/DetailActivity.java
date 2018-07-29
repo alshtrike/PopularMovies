@@ -108,46 +108,51 @@ public class DetailActivity extends AppCompatActivity implements ReviewAdapter.R
                 Movie movie = parentIntent.getParcelableExtra(getString(R.string.movie_extra));
                 fillOutMovieDetailView(movie);
                 handleFavoriteToggle(movie);
+
                 int movieId = movie.getId();
-
                 MovieRequestBuilder movieRequestBuilder = new MovieRequestBuilder(this);
-                mReviewAdapter = new ReviewAdapter(this);
-                mTrailerAdapter = new TrailerAdapter(this);
-                mReviewLoadingIndicator = findViewById(R.id.pb_reviews_loading_indicator);
-                mTrailerLoadingIndicator = findViewById(R.id.pb_trailers_loading_indicator);
-
-                mTrailerRv = findViewById(R.id.rv_trailers);
-                mTrailerRv.setAdapter(mTrailerAdapter);
-                mTrailerRv.setLayoutManager(new LinearLayoutManager(this));
-
-                RecyclerView reviewRv = findViewById(R.id.rv_reviews);
-                reviewRv.setAdapter(mReviewAdapter);
-                reviewRv.setLayoutManager(new LinearLayoutManager(this));
-
-                Loader<MovieReview[]> reviewLoader = getSupportLoaderManager().getLoader(REVIEW_LOADER_ID);
-                Loader<MovieTrailer[]> trailerLoader = getSupportLoaderManager().getLoader(TRAILER_LOADER_ID);
-
-                Bundle reviewBundle = new Bundle();
-                Bundle trailerBundle = new Bundle();
-
-                String reviewsUrl = movieRequestBuilder.buildReviewsRequest(movieId);
-                String trailersUrl = movieRequestBuilder.buildPreviewsRequest(movieId);
-
-                reviewBundle.putString(getString(R.string.review_request_extra), reviewsUrl);
-                trailerBundle.putString(getString(R.string.trailer_request_extra), trailersUrl);
-
-                if(reviewLoader==null){
-                    getSupportLoaderManager().restartLoader(REVIEW_LOADER_ID, reviewBundle, mReviewLoader);
-                }else{
-                    getSupportLoaderManager().initLoader(REVIEW_LOADER_ID, reviewBundle, mReviewLoader);
-                }
-
-                if(trailerLoader==null){
-                    getSupportLoaderManager().restartLoader(TRAILER_LOADER_ID, trailerBundle, mTrailerLoader);
-                }else{
-                    getSupportLoaderManager().initLoader(TRAILER_LOADER_ID, trailerBundle, mTrailerLoader);
-                }
+                loadReviews(movieId, movieRequestBuilder);
+                loadTrailers(movieId, movieRequestBuilder);
             }
+        }
+    }
+
+    private void loadTrailers(int movieId, MovieRequestBuilder movieRequestBuilder) {
+        mTrailerAdapter = new TrailerAdapter(this);
+        mTrailerLoadingIndicator = findViewById(R.id.pb_trailers_loading_indicator);
+
+        mTrailerRv = findViewById(R.id.rv_trailers);
+        mTrailerRv.setAdapter(mTrailerAdapter);
+        mTrailerRv.setLayoutManager(new LinearLayoutManager(this));
+        Loader<MovieTrailer[]> trailerLoader = getSupportLoaderManager().getLoader(TRAILER_LOADER_ID);
+        Bundle trailerBundle = new Bundle();
+        String trailersUrl = movieRequestBuilder.buildPreviewsRequest(movieId);
+        trailerBundle.putString(getString(R.string.trailer_request_extra), trailersUrl);
+
+        if(trailerLoader==null){
+            getSupportLoaderManager().restartLoader(TRAILER_LOADER_ID, trailerBundle, mTrailerLoader);
+        }else{
+            getSupportLoaderManager().initLoader(TRAILER_LOADER_ID, trailerBundle, mTrailerLoader);
+        }
+    }
+
+    private void loadReviews(int movieId, MovieRequestBuilder movieRequestBuilder) {
+        mReviewAdapter = new ReviewAdapter(this);
+        mReviewLoadingIndicator = findViewById(R.id.pb_reviews_loading_indicator);
+
+        RecyclerView reviewRv = findViewById(R.id.rv_reviews);
+        reviewRv.setAdapter(mReviewAdapter);
+        reviewRv.setLayoutManager(new LinearLayoutManager(this));
+
+        Loader<MovieReview[]> reviewLoader = getSupportLoaderManager().getLoader(REVIEW_LOADER_ID);
+        Bundle reviewBundle = new Bundle();
+        String reviewsUrl = movieRequestBuilder.buildReviewsRequest(movieId);
+        reviewBundle.putString(getString(R.string.review_request_extra), reviewsUrl);
+
+        if(reviewLoader==null){
+            getSupportLoaderManager().restartLoader(REVIEW_LOADER_ID, reviewBundle, mReviewLoader);
+        }else{
+            getSupportLoaderManager().initLoader(REVIEW_LOADER_ID, reviewBundle, mReviewLoader);
         }
     }
 
