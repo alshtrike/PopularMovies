@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.projects.android.popularmovies.Adapters.MovieAdapter;
 import com.projects.android.popularmovies.Data.Movie;
 import com.projects.android.popularmovies.Loaders.MovieAsyncLoader;
 import com.projects.android.popularmovies.Strategies.LoadMoviesFromDbStrategy;

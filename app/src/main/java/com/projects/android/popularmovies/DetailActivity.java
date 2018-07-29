@@ -20,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.projects.android.popularmovies.Adapters.ReviewAdapter;
+import com.projects.android.popularmovies.Adapters.TrailerAdapter;
 import com.projects.android.popularmovies.Data.Movie;
 import com.projects.android.popularmovies.Data.MovieContract;
 import com.projects.android.popularmovies.Data.MovieReview;

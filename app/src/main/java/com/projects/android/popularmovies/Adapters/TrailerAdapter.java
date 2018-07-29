@@ -1,4 +1,4 @@
-package com.projects.android.popularmovies;
+package com.projects.android.popularmovies.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.projects.android.popularmovies.Data.MovieTrailer;
+import com.projects.android.popularmovies.R;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerAdapterViewHolder>{
 
