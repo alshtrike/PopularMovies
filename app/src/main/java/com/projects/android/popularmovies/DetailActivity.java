@@ -41,6 +41,7 @@ public class DetailActivity extends AppCompatActivity implements ReviewAdapter.R
     private TrailerAdapter mTrailerAdapter;
     private ReviewAdapter mReviewAdapter;
     private final Context mContext = this;
+    private RecyclerView mTrailerRv;
 
     private final LoaderManager.LoaderCallbacks<MovieReview[]> mReviewLoader = new LoaderManager.LoaderCallbacks<MovieReview[]>() {
         @Override
@@ -75,6 +76,13 @@ public class DetailActivity extends AppCompatActivity implements ReviewAdapter.R
             mTrailerLoadingIndicator.setVisibility(View.INVISIBLE);
             mTrailerAdapter.setTrailerData(data);
 
+            //Recycler view didn't resize correctly sometimes. And was only as big as 1 item.
+            // This fixed the issue. Although it should do this automatically.
+            // Seems like an Android bug...
+            int itemCount = mTrailerAdapter.getItemCount();
+            int itemSize = getResources().getDimensionPixelSize(R.dimen.trailer_list_item_height);
+            mTrailerRv.setMinimumHeight(itemCount*itemSize);
+
             if(data == null){
                 showToast(getString(R.string.movies_fetch_error));
             }
@@ -106,9 +114,9 @@ public class DetailActivity extends AppCompatActivity implements ReviewAdapter.R
                 mReviewLoadingIndicator = findViewById(R.id.pb_reviews_loading_indicator);
                 mTrailerLoadingIndicator = findViewById(R.id.pb_trailers_loading_indicator);
 
-                RecyclerView trailerRv = findViewById(R.id.rv_trailers);
-                trailerRv.setAdapter(mTrailerAdapter);
-                trailerRv.setLayoutManager(new LinearLayoutManager(this));
+                mTrailerRv = findViewById(R.id.rv_trailers);
+                mTrailerRv.setAdapter(mTrailerAdapter);
+                mTrailerRv.setLayoutManager(new LinearLayoutManager(this));
 
                 RecyclerView reviewRv = findViewById(R.id.rv_reviews);
                 reviewRv.setAdapter(mReviewAdapter);
