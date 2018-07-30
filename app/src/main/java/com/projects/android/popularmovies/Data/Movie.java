@@ -16,7 +16,7 @@ public class Movie implements Parcelable {
         //default empty constructor
     }
 
-    private Movie(Parcel in) {
+    public Movie(Parcel in) {
         mId = in.readInt();
         mTitle = in.readString();
         mImage = in.readString();
