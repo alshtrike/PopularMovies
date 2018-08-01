@@ -3,6 +3,7 @@ package com.projects.android.popularmovies;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -117,6 +118,19 @@ public class DetailActivity extends AppCompatActivity implements ReviewAdapter.R
         }
     }
 
+
+    @Override
+    public void onClick(MovieReview review) {
+        String reviewUrl = review.getUrl();
+        startImplicitIntent(reviewUrl);
+    }
+
+    @Override
+    public void onClick(MovieTrailer trailer) {
+        String videoUrl = getString(R.string.youtube_url)+trailer.getLinkToTrailer();
+        startImplicitIntent(videoUrl);
+    }
+
     private void loadTrailers(int movieId, MovieRequestBuilder movieRequestBuilder) {
         mTrailerAdapter = new TrailerAdapter(this);
         mTrailerLoadingIndicator = findViewById(R.id.pb_trailers_loading_indicator);
@@ -170,7 +184,7 @@ public class DetailActivity extends AppCompatActivity implements ReviewAdapter.R
                     uri = uri.buildUpon().appendPath(stringId).build();
                     Log.d(TAG, uri.toString());
                     getContentResolver().delete(uri, null, null);
-                    showToast("Removed movie from favorites");
+                    showToast(getString(R.string.unfavorite_success));
                 }
             }
         });
@@ -188,10 +202,10 @@ public class DetailActivity extends AppCompatActivity implements ReviewAdapter.R
         Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
 
         if(uri != null) {
-            showToast("Added movie to favorites");
+            showToast(getString(R.string.favorite_success));
         }
         else{
-            showToast("Failed to add movie to favorites");
+            showToast(getString(R.string.favorite_fail));
         }
     }
 
@@ -238,16 +252,15 @@ public class DetailActivity extends AppCompatActivity implements ReviewAdapter.R
         return datePortions[0];
     }
 
-    @Override
-    public void onClick(MovieReview review) {
-        Intent trailerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(review.getUrl()));
-        startActivity(trailerIntent);
-    }
+    private void startImplicitIntent(String url){
+        Intent implicitIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        PackageManager packageManager = getPackageManager();
 
-    @Override
-    public void onClick(MovieTrailer trailer) {
-        String videoUrl = getString(R.string.youtube_url)+trailer.getLinkToTrailer();
-        Intent trailerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl));
-        startActivity(trailerIntent);
+        if(implicitIntent.resolveActivity(packageManager)!=null){
+            startActivity(implicitIntent);
+        }
+        else{
+            showToast(getString(R.string.no_relevant_app_error));
+        }
     }
 }

@@ -24,4 +24,9 @@
     <string name="youtube_url" translatable="false">"http://www.youtube.com/watch?v="</string>
     <string name="toggle_text_on">Unfavorite</string>
     <string name="toggle_text_off">Favorite</string>
+    <string name="unfavorite_success">Removed movie from favorites</string>
+    <string name="favorite_fail">Failed to add movie to favorites</string>
+    <string name="favorite_success">Added movie to favorites</string>
+    <string name="no_relevant_app_error">No app available to handle this action</string>
+    <string name="movie_poster_layout_state">gridLayoutState</string>
 </resources>

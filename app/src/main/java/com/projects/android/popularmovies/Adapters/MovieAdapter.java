@@ -34,7 +34,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
-        Movie movieAtGivenPosition = mMovieData[position];
+        Movie movieAtGivenPosition = mMovieData[holder.getAdapterPosition()];
         ImageView moviePoster = holder.mMoviePoster;
         String movieUrl = MoviePosterPathBuilder.buildMovieGridPosterPath(mContext, movieAtGivenPosition.getImage());
 
@@ -52,6 +52,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     public void setMovieData(Movie[] movies){
         mMovieData = movies;
         notifyDataSetChanged();
+    }
+
+    public Movie[] getMovies(){
+        return mMovieData;
     }
 
     protected class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

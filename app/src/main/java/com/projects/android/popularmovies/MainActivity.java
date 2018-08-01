@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,9 @@ import com.projects.android.popularmovies.Strategies.LoadMoviesFromUrlStrategy;
 import com.projects.android.popularmovies.Strategies.LoadStrategy;
 import com.projects.android.popularmovies.Utils.MovieRequestBuilder;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
+
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, LoaderManager.LoaderCallbacks<Movie[]> {
 
     private static final int MOVIES_LOADER_ID = 0;
@@ -33,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private ProgressBar mLoadingIndicator;
     private String mRequest;
     private LoadStrategy mLoadStrategy;
+    private RecyclerView mMovieRecyclerView;
+    private Parcelable mRecyclerViewState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +49,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         if(mRequestBuilder!=null){
             mMovieAdapter = new MovieAdapter(this);
-            int numOfColumns = 2;
+            int numOfColumns = calculateNoOfColumns();
             GridLayoutManager layoutManager = new GridLayoutManager(this, numOfColumns);
-            RecyclerView movieRecyclerView = findViewById(R.id.rv_movies);
-            movieRecyclerView.setLayoutManager(layoutManager);
-            movieRecyclerView.setHasFixedSize(true);
-            movieRecyclerView.setAdapter(mMovieAdapter);
+            mMovieRecyclerView = findViewById(R.id.rv_movies);
+            mMovieRecyclerView.setLayoutManager(layoutManager);
+            mMovieRecyclerView.setHasFixedSize(true);
+            mMovieRecyclerView.setAdapter(mMovieAdapter);
 
             String requestExtra = getString(R.string.movie_request_extra);
             if(savedInstanceState!=null){
@@ -61,6 +67,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                     else{
                         sendMoviesRequest();
                     }
+                }
+                if(savedInstanceState.containsKey(getString(R.string.movie_poster_layout_state))){
+                    mRecyclerViewState = savedInstanceState.getParcelable(getString(R.string.movie_poster_layout_state));
+                    mMovieRecyclerView.getLayoutManager().onRestoreInstanceState(mRecyclerViewState);
                 }
             }
             else{
@@ -85,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        //reset layout state
+        mRecyclerViewState = null;
         int id = item.getItemId();
         switch (id){
             case R.id.sort_by_popular:
@@ -114,6 +126,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(getString(R.string.movie_request_extra), mRequest);
+        Parcelable gridLayoutState = mMovieRecyclerView.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(getString(R.string.movie_poster_layout_state), gridLayoutState);
+
     }
 
     @Override
@@ -126,6 +141,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mLoadingIndicator.setVisibility(View.INVISIBLE);
         mMovieAdapter.setMovieData(data);
+        if(mRecyclerViewState!=null){
+            mMovieRecyclerView.getLayoutManager().onRestoreInstanceState(mRecyclerViewState);
+        }
 
         if(data == null){
             showToast(getString(R.string.movies_fetch_error));
@@ -188,6 +206,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private void showToast(String toastText){
         Toast toast = Toast.makeText(this, toastText, Toast.LENGTH_LONG);
         toast.show();
+    }
+    public int calculateNoOfColumns() {
+        //2 if vertical, 4 if horizontal
+       int orientation= getResources().getConfiguration().orientation;
+       switch (orientation){
+           case ORIENTATION_LANDSCAPE : return 4;
+           case ORIENTATION_PORTRAIT: return 2;
+           default: return 2;
+       }
     }
 
 }
